@@ -12,24 +12,24 @@
 	</resultMap>
 	
 	<insert id="addCart" parameterType="String" >	
-	INSERT INTO
-	cart (user_id)
-	values (#{value});
+		INSERT INTO
+		cart (user_id)
+		values (#{value});
 	</insert>
 		
-	<select id="getCart" parameterType="cart" resultType="cart">
-	SELECT
-	cart
-	FROM cart
-	WHERE
-	user_id = #{userId}
+	<select id="getCart" parameterType="cart" resultMap="cartMap">
+		SELECT
+		cart
+		FROM cart
+		WHERE
+		user_id = #{userId}
 	</select>
 	
 	<update id="updateCart" parameterType="cart" >
 		UPDATE
 		cart
 		<set>
-			cart= #{productNames}
+		cart= #{productNames}
 		</set>
 		WHERE user_id = #{userId}
 	</update>
