@@ -36,6 +36,29 @@
   
   <script type="text/javascript">
   
+  $(function(){
+	$(".tranNo").on("click" , function() {
+		var tranNo = $(this).text().trim();
+		$(self.location).attr("href","/purchase/getPurchase?tranNo="+tranNo);
+	}
+	);
+	
+	$(".prodNo").on("click" , function() {
+		var productNo = $(this).text().trim();
+		$(self.location).attr("href","/product/updateProduct?prodNo="+productNo);	
+	}
+	);
+	
+	$(".prodName").on("click" , function() {
+		var count = $(".prodName").index(this);
+		$($(".prodNo")[count]).trigger('click');
+	}
+	);
+	
+  });
+  
+  
+  
 	function fncPageMove(currentPage) {
 		$("#currentPage").val(currentPage);
 		$("form").attr("method" , "POST").attr("action" , "/purchase/listSalePurchase").submit();
@@ -194,9 +217,9 @@
 			<c:set var="i" value="${ i+1 }" />
 			<tr>
 			  <td align="center">${ i }</td>
-			  <td align="left" class="tranNo">${purchase.tranNo}</td>
-			  <td align="left">${purchase.purchaseProd.prodName}</td>
-			  <td align="left" class="prodNo">${purchase.purchaseProd.prodNo}</td>
+			  <td align="left"><span class="tranNo">${purchase.tranNo}</span></td>
+			  <td align="left"><span class="prodName">${purchase.purchaseProd.prodName}</span></td>
+			  <td align="left"><span class="prodNo">${purchase.purchaseProd.prodNo}</span></td>
 			  <td align="left">${purchase.purchaseProd.price}</td>
 			  <td align="left" class="stock">${purchase.stock}</td>
 			  <td align="left">${purchase.buyer.userId}</td>

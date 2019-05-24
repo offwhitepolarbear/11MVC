@@ -20,7 +20,8 @@ $(function() {
 	
 	//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 	//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-	 $( "td.ct_btn01:contains('수정')" ).on("click" , function() {
+	 $( "#modify" ).on("click" , function() {
+		 //alert("눌렸어");
 		 $("form").attr("method" , "GET").attr("action" , "/purchase/updatePurchase").submit();
 	});
 	
@@ -39,6 +40,14 @@ $(function() {
 	<jsp:include page="/layout/toolbar.jsp" />
    	<!-- ToolBar End /////////////////////////////////////-->
 	
+   	<!-- 거래번호 담을부분 /////////////////////////////////////-->
+
+		<form>
+		<input type='hidden' name = 'tranNo' value='${purchase.tranNo}'>
+		</form>		
+	
+	
+	
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 	
@@ -48,10 +57,11 @@ $(function() {
 	    </div>
 
 		<div class="row">
+
 	  		<div class="col-xs-4 col-md-2"><strong>거래번호</strong></div>
 			<div class="col-xs-8 col-md-4">${purchase.tranNo}</div>
 		</div>
-		
+
 		<hr/>
 	
 		<div class="row">
@@ -155,7 +165,7 @@ $(function() {
 		
 		<div class="row">
 	  		<div class="col-md-12 text-center ">
-	  			<button type="button" class="btn btn-primary">수정하기</button>
+	  			<button type="button" class="btn btn-primary" id='modify'>수정하기</button>
 	  		</div>
 		</div>
 		

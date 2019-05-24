@@ -32,9 +32,7 @@
 .btn-sm{
 margin-left: 0px;
 }
-	  body {
-            padding-top : 50px;
-        }
+
     </style>
   
   <script type="text/javascript">
