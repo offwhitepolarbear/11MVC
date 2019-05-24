@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="CartMapper">
+		
+	<resultMap id="cartMap" type="cart">
+		<result property="userId" 		column="user_id" 			jdbcType="VARCHAR"/>
+		<result property="productNames"		column="cart" 	jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<insert id="addCart" parameterType="String" >	
+	INSERT INTO
+	cart (user_id)
+	values (#{value});
+	</insert>
+		
+	<select id="getCart" parameterType="cart" resultType="cart">
+	SELECT
+	cart
+	FROM cart
+	WHERE
+	user_id = #{userId}
+	</select>
+	
+	<update id="updateCart" parameterType="cart" >
+		UPDATE
+		cart
+		<set>
+			cart= #{productNames}
+		</set>
+		WHERE user_id = #{userId}
+	</update>
+		
+	</mapper>
