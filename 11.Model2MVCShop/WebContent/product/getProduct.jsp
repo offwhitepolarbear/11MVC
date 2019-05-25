@@ -41,12 +41,70 @@ $(function() {
 	// $( ".btn btn-primary:contains('사러가기')" ).on("click" , function() {
 		 $( "#goToBuy" ).on("click" , function() {
 			 var prodNo = $("#prodNo").text().trim();
-			 
 	 $("form").attr("method" , "GET").attr("action" , "/purchase/addPurchase/"+prodNo).submit();
 	});
 		 
-		 $( "#addToCart" ).on("click" , function() {
-			 alert("준비중입니다ㅠㅠ");
+		 $( "#addToCart").on("click" , function() {
+			 //alert("준비중입니다ㅠㅠ");
+			 var cartText=$("#cartext").text();
+			 if(cartText.indexOf('담기')==-1){
+			 var boxTag="<div class='text-center'><label for='cartIn' class='control-label'></label><input type='text' class='form-control' id='cartIn' placeholder='숫자 입력'></div>";
+			 $("#carting").html(boxTag);
+			 $("#cartext").text("카트에담기");
+			 $("#cartingMsg").text("");
+			 }
+			 else{
+				 
+				 if ($("#cartIn").val()<1 || $("#cartIn").val()==""){
+					 $("#cartingMsg").text("유효성체크에 걸리면 이 메시지가 뜹니다");
+				}				 
+				else{
+					 alert($("#cartIn").val());
+				///ajax를 여기서 합시다~//
+				
+				var prodNoJson=$("#prodNo").text().trim();
+				var stockJson = $("#cartIn").val();
+				var jsoned = {prodNo : prodNoJson, stock : stockJson};
+				var stringified = JSON.stringify(jsoned);
+				$.ajax(
+				{
+				type : "POST",
+				url : "/purchase/json/updateCart",
+				data : stringified,
+				contentType: "application/json", //보내는 컨텐츠의 타입
+				//dataType : "json",      //받아올 데이터의 타입 필요없음
+				success : function(serverData, status) {
+									//alert(status);
+									//alert("server에서 온 Data : \n" + serverData);
+									var JSONData = JSON.stringify(serverData);	
+									//alert("JSONData = \n"+	JSONData);
+									//alert(serverData.stock);
+									//alert(serverData.prodName);
+									alert(serverData.productNames);
+									
+									$("#cartingMsg").text("제품번호"+$("#prodNo").text()+"인 제품"+$("#cartIn").val()+"개가 카트에 담겼어요");
+									 $("#carting").empty();
+									 $("#cartext").text("카트열기");
+									
+								},
+				error : function(request,status,error){
+							        alert("에러남 : "+error);
+							       }
+				}
+			);
+				
+				
+				
+				///////////////////ajax//////////
+					
+					
+					
+					 
+					
+				 }
+				 
+			 }
+			 
 		 }
 		 );
 
@@ -125,15 +183,25 @@ $(function() {
 			<div class="col-xs-8 col-md-4">${product.stock}</div>
 		</div>
 		
-		
+		<br/>
 		<div class="row">
-	  		<div class="col-md-12 text-center ">
-	  			<button type="button" class="btn btn-primary" id="goToBuy">사러가기</button>
-	  			<button type="button" class="btn btn-success" id="addToCart"><i class="glyphicon glyphicon-shopping-cart"></i>카트에 담기</button>
+	  		<div class="text-center ">
+	  			<span><button type="button" class="btn btn-primary" 
+	  			style="width: 35%;" id="goToBuy">사러가기</button></span>
+	  			<span><button type="button" class="btn btn-success"
+	  			 style="width: 35%;" id="addToCart">
+	  			 <i class="glyphicon glyphicon-shopping-cart" aria-hidden="true"id='cartext'>
+	  			 카트열기</i></button></span>
+	  			<span id="carting" ></span>
+	  			
 	  		</div>
 		</div>
 		
 		<br/>
+		
+		<div class="row text-center">
+		<span id ='cartingMsg'></span>
+		</div>
 		
  	</div>
  	</form>

@@ -114,7 +114,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 	}
 
 	@Override
-	public String getCart(Cart cart) throws Exception {
+	public Cart getCart(Cart cart) throws Exception {
 		// TODO Auto-generated method stub
 		return purchaseDao.getCart(cart);
 	}

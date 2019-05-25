@@ -2,10 +2,13 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
 <html>
 <head>
-<title>구매 목록조회</title>
+<title>
+
+카트를 보러 왔다
+
+</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
@@ -28,15 +31,13 @@
   <!-- jQuery UI toolTip 사용 JS-->
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   
-  <style>
-	  body {
-            padding-top : 50px;
-        }
-    </style>
+
   
-  <script type="text/javascript">
+ <script type="text/javascript">
   
-  </script>
+
+</script>
+
 </head>
 
 <body>
@@ -46,10 +47,10 @@
    	<!-- ToolBar End /////////////////////////////////////-->
 	
 	<!--  화면구성 div Start /////////////////////////////////////-->
-	<div class="container">
+<div class="container-fluid">
 	
 		<div class="page-header text-info">
-	       <h3>상품 목록조회</h3>
+	       <h3>장바구니입니다~</h3>
 	    </div>
 	    
 	    <!-- table 위쪽 검색 Start /////////////////////////////////////-->
@@ -63,10 +64,7 @@
 		    
 		    <div class="col-md-6 text-right">
 			    <form class="form-inline" name="detailForm">
-			  
-				  <!-- PageNavigation 선택 페이지 값을 보내는 부분 -->
-				  <input type="hidden" id="currentPage" name="currentPage" value=""/>
-				  
+			    
 				</form>
 	    	</div>
 	    	
@@ -75,62 +73,39 @@
 		
 		
       <!--  table Start /////////////////////////////////////-->
-      <table class="table table-hover table-striped" >
+   
       
-        <thead>
-          <tr>
-            <th align="center">No</th>
- <th align="left" >거래번호</th>
- <th align="left" >제품명</th>
- <th align="left" >제품번호</th>
- <th align="left" >가격</th>
- <th align="left" >구매갯수</th>
- <th align="left" >회원ID</th>
- <th align="left" >배송주소</th>
- <th align="left" >물품현황</th>
 
-
-
-
-          </tr>
-        </thead>
-       
-		<tbody>
-		
+	
+		<div class="row">
 		  <c:set var="i" value="0" />
-		  <c:forEach var="purchase" items="${list}">
+		  <c:forEach var="product" items="${list}">
 			<c:set var="i" value="${ i+1 }" />
-			<tr>
-			  <td align="center">${ i }</td>
-			  <td align="left"  title="Click : 회원정보 확인" class="tranNo">${purchase.tranNo}</td>
-			  <td align="left">${purchase.purchaseProd.prodName}</td>
-			  <td align="left">${purchase.purchaseProd.prodNo}</td>
-			  <td align="left">${purchase.purchaseProd.price}</td>
-			  <td align="left">${purchase.stock}</td>
-			  
-			  <td align="left">${user.userId}</td>
-			  <td align="left">${purchase.divyAddr}</td>			  
-			  <td align="left">
-					<c:if test="${purchase.tranCode=='1  ' }">
-						구매완료 <span>주문취소</span>
-					</c:if>
-					 <c:if test="${purchase.tranCode=='2  ' }">
-						배송중 수취확인
-					</c:if> 
-					<c:if test="${purchase.tranCode=='3  ' }">
-						배송완료 주문취소
-					</c:if>
-					<c:if test="${purchase.tranCode=='4  ' }">
-						주문취소됨
-					</c:if>
-				</td>			
-			  
-			</tr>
+			<div class='row'>
+			<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+				 <a href="javascript:fncGetProduct(${product.prodNo});" class="thumbnail">
+				 <img class="img-rounded" src="../images/uploadFiles/16by9.png" 
+				 style="width:100%;
+				 background:
+				 url('../images/uploadFiles/${product.fileName}'), 
+				 url('../images/uploadFiles/noimg.JPG');
+				  no-repeat center center; background-size:cover;">
+	      			<!--  
+	      			<img class="img-rounded" src="../images/uploadFiles/${product.fileName}" >
+	      			-->
+	    			 ${product.prodName}
+	    			<br/>
+	    			<i class="glyphicon glyphicon-usd" aria-hidden="true"></i> ${product.price}
+	    		</a>
+			
+				</div>
+			   
+			</div>
+    
           </c:forEach>
         
-        </tbody>
-      
-      </table>
+   </div>
+ 
 	  <!--  table End /////////////////////////////////////-->
 	  
  	</div>

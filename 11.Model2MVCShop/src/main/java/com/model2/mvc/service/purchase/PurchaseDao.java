@@ -33,7 +33,7 @@ public interface PurchaseDao {
 	
 	public int addCart(String userId) throws Exception ;
 	
-	public String getCart(Cart cart) throws Exception ; 
+	public Cart getCart(Cart cart) throws Exception ; 
 	
 	public void updateCart (Cart cart) throws Exception ;
 

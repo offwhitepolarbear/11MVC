@@ -1,2 +1,10 @@
 /com/
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+/config/
+/log4j.properties
+>>>>>>> refs/heads/Editor03
+>>>>>>> refs/heads/master
 /sql/
