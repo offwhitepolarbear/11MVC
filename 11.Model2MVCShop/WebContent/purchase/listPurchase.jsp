@@ -139,7 +139,7 @@ margin-left: 0px;
    	<!-- ToolBar End /////////////////////////////////////-->
 	
 	<!--  화면구성 div Start /////////////////////////////////////-->
-	<div class="container">
+	<div class="container-fluid">
 	
 		<div class="page-header text-info">
 	       <h3>상품 목록조회</h3>

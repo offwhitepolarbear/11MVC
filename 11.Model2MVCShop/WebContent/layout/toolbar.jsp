@@ -142,6 +142,7 @@
 		 	});
 		 	$( "a:contains('장바구니')" ).on("click" , function() {
 		 		alert("바구니!");
+		 		$(self.location).attr("href","/purchase/getCart"); 	 		
 		 	});
 		 	
 		 	$( "a:contains('최근')" ).on("click" , function() {

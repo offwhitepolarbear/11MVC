@@ -159,3 +159,66 @@ FROM (	SELECT inner_table. * ,  ROWNUM AS row_seq
 WHERE row_seq BETWEEN 4 AND 6;
 
 //==> (currentPage-1) * paseSize+1           currentPage * paseSize
+
+
+
+////////////////////////재고관리 추가합니다.////////////////////////
+
+
+CREATE TABLE stock ( 
+prod_no NUMBER	NOT NULL REFERENCES product(prod_no),
+stock	NUMBER NOT NULL CHECK ( stock >= 0 ),
+sales_volume	NUMBER	NOT NULL CHECK ( sales_volume >= 0 ),
+PRIMARY KEY(prod_no)
+);
+
+
+
+
+
+INSERT INTO stock
+VALUES ( 10000, 1000, 0);
+
+ALTER TABLE transaction ADD (stock NUMBER CHECK ( stock >= 0 ));
+update transaction set stock=1;
+commit;
+
+update stock set stock = (stock+10), sales_volume = (sales_volume+10) where prod_no=10000
+
+
+CREATE TABLE cart ( 
+user_id VARCHAR2(4000) NOT NULL REFERENCES users(user_id),
+cart VARCHAR2(4000) DEFAULT 'empty',
+PRIMARY KEY(user_id)
+);
+
+INSERT INTO 
+cart (user_id)
+VALUES ('user01');
+
+INSERT INTO 
+cart (user_id)
+VALUES ('user02');
+
+SELECT
+cart
+FROM cart
+WHERE user_id = 'user01';
+
+INSERT INTO cart (user_id) VALUES ('user03');
+INSERT INTO cart (user_id) VALUES ('user04');
+INSERT INTO cart (user_id) VALUES ('user05');
+INSERT INTO cart (user_id) VALUES ('user06');
+INSERT INTO cart (user_id) VALUES ('user07');
+INSERT INTO cart (user_id) VALUES ('user08');
+INSERT INTO cart (user_id) VALUES ('user09');
+INSERT INTO cart (user_id) VALUES ('user10');
+INSERT INTO cart (user_id) VALUES ('user11');
+INSERT INTO cart (user_id) VALUES ('user12');
+INSERT INTO cart (user_id) VALUES ('user13');
+INSERT INTO cart (user_id) VALUES ('user14');
+INSERT INTO cart (user_id) VALUES ('user15');
+INSERT INTO cart (user_id) VALUES ('user16');
+INSERT INTO cart (user_id) VALUES ('user17');
+INSERT INTO cart (user_id) VALUES ('user18');
+INSERT INTO cart (user_id) VALUES ('user19');

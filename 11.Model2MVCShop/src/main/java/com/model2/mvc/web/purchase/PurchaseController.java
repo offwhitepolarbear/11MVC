@@ -1,5 +1,7 @@
 package com.model2.mvc.web.purchase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
+import com.model2.mvc.service.domain.Cart;
 import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.domain.User;
@@ -213,6 +216,48 @@ public class PurchaseController {
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);
 		return "forward:/purchase/listSalePurchase.jsp";
+	}
+	
+	@RequestMapping(value = "getCart", method = RequestMethod.GET)
+	public String getCart(HttpSession session, Model model) throws Exception {
+
+		List<String> prodNos = new ArrayList<String>();
+		List<String> stocks = new ArrayList<String>();
+		List<Product> cartList = new ArrayList<Product>();
+
+		User user = (User) session.getAttribute("user");
+
+		Cart cart = new Cart();
+		cart.setUserId(user.getUserId());
+		Cart reCart = purchaseService.getCart(cart);
+
+		String beforeCart = reCart.getProductNames();
+		
+		if(!beforeCart.equals("empty")) {
+		String[] parseCart = beforeCart.split("n");
+
+			for (int i = 0; i < parseCart.length; i++) {
+				String[] parseProd = parseCart[i].split("a");
+				prodNos.add(parseProd[0]);
+				stocks.add(parseProd[1]);
+			}
+			
+			for (int i=0; i<prodNos.size();i++) {
+				Product cartingProduct = productService.getProduct(Integer.parseInt(prodNos.get(i)));
+				cartingProduct.setStock(Integer.parseInt(stocks.get(i)));
+				cartList.add(cartingProduct);
+			}
+			model.addAttribute("cartList",cartList);
+		}
+		
+		if(beforeCart.equals("empty")) {
+			model.addAttribute("cartList",cartList);
+			return "forward:/purchase/getCart.jsp";
+			
+		}
+		
+		
+		return "forward:/purchase/getCart.jsp";
 	}
 	
 }

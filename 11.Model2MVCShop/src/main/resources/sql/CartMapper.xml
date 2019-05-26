@@ -14,7 +14,7 @@
 	<insert id="addCart" parameterType="String" >	
 		INSERT INTO
 		cart (user_id)
-		values (#{value});
+		values (#{value})
 	</insert>
 		
 	<select id="getCart" parameterType="cart" resultMap="cartMap">

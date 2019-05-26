@@ -19,16 +19,80 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
+	<!-- <style>
        body > div.container{
         	border: 3px solid #D6CDB7;
             margin-top: 10px;
         }
     </style>
-    
+     -->
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
 	
+	////==================id 유효성 체크용 펑션입니다~==================//
+	function checkId(id){
+		//var id=$("#userId").val();
+		//a-z로 시작해서 뒤는 숫자나 알파벳만 들어간 걸로... 
+		var idGuide = /^[a-z]/; //a-z로 시작하면 트루
+		var idGuide2 = /\s+/; // 공백이 하나라도 있으면 트루임
+		var idGuide3 = /^[a-z0-9+]*$/; //a-z 0-9만 있어야됨
+		if (idGuide.test(id) && !idGuide2.test(id) && idGuide3.test(id)){
+			return true;
+		}
+		
+		else{
+			return false;
+		}
+		
+	}
+	
+	////==================id 중복 실시간 체크용 펑션입니다~==================//
+	$(function(){
+	$("#userId").on("keyup" , function() {
+		var id = $("#userId").val();
+		var test = { userId : id };
+		var test2 = JSON.stringify(test);
+		
+		 var checker = checkId(id);
+		 if(checker){
+			 $.ajax( 
+						{
+							url : "/user/json/checkDuplication",
+							method : "POST" ,
+							dataType : "json" ,
+							data: test2,
+							headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+							},
+							success : function(serverData , status) {
+								
+								var JSONData = $.parseJSON(serverData);
+								
+								if(JSONData){
+									
+									var memo = "<div class='alert alert-success' role='alert'><i class='glyphicon glyphicon-ok-sign' aria-hidden='true'></i>사용하실 수 있는 ID입니다.</div>";
+									$("#idChecker").html(memo);
+								}
+								if(!JSONData){
+									
+									var memo = "<div class='alert alert-danger' role='alert'><i class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></i>이미 존재하는 ID입니다.</div>";
+									$("#idChecker").html(memo);
+								}
+							}	 
+						}
+						)
+				
+		 }
+		 if(!checker){
+			 var memo = "<div class='alert alert-warning' role='alert'><i class=' glyphicon glyphicon-remove-sign ' aria-hidden='true'></i>알파벳 소문자로 시작하는 알파벳소문자와 숫자로 이루어진 ID를 사용해주세요</div>";				
+				$("#idChecker").html(memo);
+		 }
+		 
+		 }
+		);
+	}
+);	
 		//============= "가입"  Event 연결 =============
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -151,6 +215,23 @@
 											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
 			});
 		});	
+		
+		
+		//패스워드 일치하지 않을시 경고문구 띄우기
+		 $(function() {
+				var alertTag="<div class='alert alert-danger' role='alert'><span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span><span class='sr-only'>Error:</span>비밀번호가 동일하지 않습니다 확인해주세요</div>";
+				$("input[type='password']").on("keyup" , function() {
+					$(".passwordChecker").empty();
+					if ($("input[name='password']").val() != $("input[name='password2']").val() ){
+					$(".passwordChecker").html(alertTag);
+						}
+					}
+				);
+					
+		 });
+		
+		
+		
 
 	</script>		
     
@@ -167,7 +248,7 @@
    	<!-- ToolBar End /////////////////////////////////////-->
 
 	<!--  화면구성 div Start /////////////////////////////////////-->
-	<div class="container">
+	<div class="container-fluid">
 	
 		<h1 class="bg-primary text-center">회 원 가 입</h1>
 		
@@ -177,24 +258,27 @@
 		  <div class="form-group">
 		    <label for="userId" class="col-sm-offset-1 col-sm-3 control-label">아 이 디</label>
 		    <div class="col-sm-4">
-		      <input type="text" class="form-control" id="userId" name="userId" placeholder="중복확인하세요"  readonly>
-		       <span id="helpBlock" class="help-block">
-		      	<strong class="text-danger">입력전 중복확인 부터..</strong>
-		      </span>
+		      <input type="text" class="form-control" id="userId" name="userId" placeholder="소문자로 시작하는 알파벳+숫자조합" >
 		    </div>
 		    <div class="col-sm-3">
 		      <button type="button" class="btn btn-info">중복확인</button>
 		    </div>
 		  </div>
 		  
+		  <div class='text-center' id='idChecker'>
+		  </div>
+		    
 		  <div class="form-group">
 		    <label for="password" class="col-sm-offset-1 col-sm-3 control-label">비밀번호</label>
 		    <div class="col-sm-4">
 		      <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호">
 		    </div>
 		  </div>
-		  
-		  <div class="form-group">
+	 	
+		  <div class='passwordChecker text-center'>
+		  </div>
+		
+		  <div class="form-group ">
 		    <label for="password2" class="col-sm-offset-1 col-sm-3 control-label">비밀번호 확인</label>
 		    <div class="col-sm-4">
 		      <input type="password" class="form-control" id="password2" name="password2" placeholder="비밀번호 확인">
@@ -204,7 +288,7 @@
 		  <div class="form-group">
 		    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">이름</label>
 		    <div class="col-sm-4">
-		      <input type="password" class="form-control" id="userName" name="userName" placeholder="회원이름">
+		      <input type="text" class="form-control" id="userName" name="userName" placeholder="회원이름">
 		    </div>
 		  </div>
 		  
@@ -242,7 +326,7 @@
 		    <div class="col-sm-2">
 		      <input type="text" class="form-control" id="phone3" name="phone3" placeholder="번호">
 		    </div>
-		    <input type="hidden" name="phone"  />
+		    <input type="hidden" name="phone"/>
 		  </div>
 		  
 		   <div class="form-group">

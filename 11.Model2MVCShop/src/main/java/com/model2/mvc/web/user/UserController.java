@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.User;
+import com.model2.mvc.service.purchase.PurchaseService;
 import com.model2.mvc.service.user.UserService;
 
 
@@ -30,6 +31,10 @@ public class UserController {
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private UserService userService;
+	
+	@Autowired
+	@Qualifier("purchaseServiceImpl")
+	private PurchaseService purchaseService;
 	//setter Method 구현 않음
 		
 	public UserController(){
@@ -56,7 +61,7 @@ public class UserController {
 		System.out.println("/user/addUser : POST");
 		//Business Logic
 		userService.addUser(user);
-		
+		purchaseService.addCart(user.getUserId());
 		return "redirect:/user/loginView.jsp";
 	}
 	
