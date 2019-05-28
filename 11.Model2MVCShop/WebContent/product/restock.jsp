@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
+<!DOCTYPE html>
 
 <html>
 <head>

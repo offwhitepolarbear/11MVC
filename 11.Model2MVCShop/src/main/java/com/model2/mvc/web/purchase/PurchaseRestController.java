@@ -245,6 +245,80 @@ public class PurchaseRestController {
 		return cart;
 	}
 	
-	
+	@RequestMapping(value = "json/updateCartStock", method = RequestMethod.POST)
+	public Cart updateCartStock(@RequestBody Product product, HttpSession session) throws Exception {
+
+		System.out.println("카트에 들어갈 제품 번호 : " + product.getProdNo());
+		System.out.println("카트에 들어갈 재고 수 : " + product.getStock());
+
+		String againProdPosition = "none";
+		String inputProdNo = String.valueOf(product.getProdNo());
+		String carting = "";
+		int inputStock = product.getStock();
+		int stockAlready = 0;
+
+		List<String> prodNos = new ArrayList<String>();
+		List<String> stocks = new ArrayList<String>();
+
+		User user = (User) session.getAttribute("user");
+
+		Cart cart = new Cart();
+		cart.setUserId(user.getUserId());
+		Cart reCart = purchaseService.getCart(cart);
+		System.out.println("갔다온 카트 아이디 출력 : " + cart.getUserId());
+		// 카트 비었을 경우 처리//
+		if (reCart.getProductNames().equals("empty")) {
+			System.out.println("카트가 비어서 empty시 출력됩니다.");
+			carting += product.getProdNo() + "a" + product.getStock() + "n";
+		}
+
+		else if (!reCart.getProductNames().equals("empty")) {
+			System.out.println("카트에 들어있는게 있으면 출력됩니다.");
+			String beforeCart = reCart.getProductNames();
+			String[] parseCart = beforeCart.split("n");
+			// 중복제품이 기존에 있던 경우 찾아냅시다
+			for (int i = 0; i < parseCart.length; i++) {
+				if (parseCart[i].indexOf(inputProdNo) != -1) {
+					againProdPosition = String.valueOf(i);
+				}
+			}
+
+			// 중복검사 통과시 경우
+			if (againProdPosition.equals("none")) {
+				carting = product.getProdNo() + "a" + product.getStock() + "n" + beforeCart;
+			}
+
+			// 중복이 있어!
+			else {
+				for (int i = 0; i < parseCart.length; i++) {
+					String[] parseProd = parseCart[i].split("a");
+					if (i == Integer.parseInt(againProdPosition)) {
+						stockAlready = Integer.parseInt(parseProd[1]);
+						continue;
+					}
+					prodNos.add(parseProd[0]);
+					stocks.add(parseProd[1]);
+				}
+
+				//int temp = inputStock + stockAlready;
+				prodNos.add(0, inputProdNo);
+				stocks.add(0, product.getStock() + "");
+
+				for (int i = 0; i < prodNos.size(); i++) {
+					carting += prodNos.get(i) + "a";
+					carting += stocks.get(i) + "n";
+				}
+
+			}
+
+		}
+
+		cart.setProductNames(carting);
+		//System.out.println("카트내용☆★☆★☆★☆★☆★" + cart.getProductNames());
+		//System.out.println("카트아이디☆★☆★☆★☆★:" + cart.getUserId());
+		purchaseService.updateCart(cart);
+
+		return cart;
+	}
 
 }

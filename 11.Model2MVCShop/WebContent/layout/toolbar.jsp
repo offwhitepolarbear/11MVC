@@ -141,7 +141,6 @@
 		 		$(self.location).attr("href","/purchase/listPurchase");
 		 	});
 		 	$( "a:contains('장바구니')" ).on("click" , function() {
-		 		alert("바구니!");
 		 		$(self.location).attr("href","/purchase/getCart"); 	 		
 		 	});
 		 	

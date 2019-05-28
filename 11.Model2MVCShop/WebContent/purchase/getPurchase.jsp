@@ -2,6 +2,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -46,15 +47,57 @@ $(function() {
 		<input type='hidden' name = 'tranNo' value='${purchase.tranNo}'>
 		</form>		
 	
-	
-	
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 	
-		<div class="page-header">
-	       <h3 class=" text-info">주문정보조회</h3>
-	       <h5 class="text-muted">주문하신<strong class="text-danger">내역을</strong>확인해주세요</h5>
+	<div class="page-header text-info">
+	       <h3>구매정보 확인 페이지예요</h3>
 	    </div>
+	
+		<div class="table-responsive">
+			<table class='table table-hover'>
+						
+<thead>
+    <tr>
+     <!-- <th scope="col" class="success">#</th> -->
+	
+      <th scope="col" class="active">이미지</th>
+      <th scope="col" class="warning">제품명</th>
+       <th scope="col" class="success">상세정보</th>  
+      <th scope="col" >가격</th>
+      <th scope="col" class="info">갯수</th>
+    </tr>
+  </thead>
+  <tbody>
+	
+		  <c:set var="i" value="0" />
+		  <c:forEach var="product" items="${purchaseList}">
+			<c:set var="i" value="${ i+1 }" />
+		
+
+<!-- On cells (`td` or `th`) -->
+
+<tr class='productCount' id='${product.prodNo}'>
+  <!-- <td class="success col-md-1">${i}</td> -->
+  <td class="active col-sm-3 col-md-3"><img class="img-rounded" src="../images/uploadFiles/16by9.png" 
+				 style="height: 100px;
+				 background:
+				 url('../images/uploadFiles/${product.fileName}'), 
+				 url('../images/uploadFiles/noimg.JPG');
+				  no-repeat center center; background-size:cover;"></td>
+  <td class="warning col-md-2">${product.prodName}</td>
+    <td class="success col-md-2">${product.prodDetail}</td>
+  <td class="col-xs-2 col-sm-2 col-md-2"><i class="glyphicon glyphicon-usd" aria-hidden="true"></i> ${product.price}</td>
+  <td class="info col-xs-1 col-sm-1 col-md-1">${product.stock} 개</td>
+</tr>
+
+    
+          </c:forEach>
+   
+          </tbody>
+          </table>
+         
+   </div>
 
 		<div class="row">
 
@@ -62,55 +105,6 @@ $(function() {
 			<div class="col-xs-8 col-md-4">${purchase.tranNo}</div>
 		</div>
 
-		<hr/>
-	
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>제품번호</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.purchaseProd.prodNo}</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>상품명</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.purchaseProd.prodName}</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>상품이미지</strong></div>
-			<div class="col-xs-8 col-md-4"><img
-					src="/images/uploadFiles/${purchase.purchaseProd.fileName}" style="width: auto; height:250px;"/></div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>상품상세정보</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.purchaseProd.prodDetail}</div>
-		</div>
-		
-		<hr/>
-		
-		
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>가격</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.purchaseProd.price}</div>
-		</div>
-		<hr/>
-
-<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>구매 갯수</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.stock}</div>
-		</div>
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>결제된 금액</strong></div>
-			<div class="col-xs-8 col-md-4">${totalPrice}</div>
-		</div>
 		<hr/>
 		
 		<div class="row">
@@ -131,7 +125,7 @@ $(function() {
 			<div class="col-xs-8 col-md-4">${purchase.receiverName}</div>
 		</div>
 
-
+		<hr/>
 <div class="row">
 	  		<div class="col-xs-4 col-md-2"><strong>구매자연락처</strong></div>
 			<div class="col-xs-8 col-md-4">${purchase.receiverPhone}</div>
@@ -161,8 +155,6 @@ $(function() {
 		</div>
 		<hr/>
 
-		
-		
 		<div class="row">
 	  		<div class="col-md-12 text-center ">
 	  			<button type="button" class="btn btn-primary" id='modify'>수정하기</button>

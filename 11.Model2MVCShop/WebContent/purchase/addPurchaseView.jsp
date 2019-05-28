@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -13,11 +14,6 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
-	 body {
-            padding-top : 50px;
-        }
-    </style>
     
        <!--  ///////////////////////// 데이트피커용 추가 CDN 입니다////////////////////// -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />

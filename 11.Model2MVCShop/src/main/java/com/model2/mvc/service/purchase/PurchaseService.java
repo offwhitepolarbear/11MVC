@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Cart;
+import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.domain.Purchase;
 
 
@@ -12,7 +13,7 @@ public interface PurchaseService {
 
 	public int addPurchase(Purchase purchase) throws Exception;
 	
-	public int stockPurchase(Purchase purchase) throws Exception;
+	public int stockPurchase(Product product) throws Exception;
 	
 	public int orderCancel(Purchase purchase) throws Exception;
 	

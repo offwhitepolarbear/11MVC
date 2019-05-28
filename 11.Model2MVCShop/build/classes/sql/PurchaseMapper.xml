@@ -24,28 +24,34 @@
 	<result property="receiverPhone" 	column="receiver_phone" 	jdbcType="VARCHAR"  />
 	<result property="tranCode" 			column="tran_status_code" 	jdbcType="CHAR"  />
 	<result property="tranNo" 				column="tran_no" 				jdbcType="NUMERIC"  />
+
 	<result property="stock" 					column="stock" 					jdbcType="NUMERIC"  />
+	<result property="products"				column="products"				jdbcType="VARCHAR" />
 </resultMap>
 
 	<insert id="addPurchase" parameterType="purchase" >
+	
+	<selectKey keyProperty="tranNo" resultType="int" order="BEFORE">  
+       SELECT seq_transaction_tran_no.nextval FROM DUAL
+     </selectKey>
 	INSERT INTO
-	transaction ( tran_no, prod_no, buyer_id,
+	transaction ( tran_no, products, buyer_id,
 						 payment_option, receiver_name, receiver_phone,
 						 demailaddr, dlvy_request, tran_status_code,
-						 order_data, dlvy_date, stock )
-	VALUES ( seq_transaction_tran_no.nextval, #{purchaseProd.prodNo}, #{buyer.userId},
+						 order_data, dlvy_date )
+	VALUES ( #{tranNo}, #{products}, #{buyer.userId},
 					 #{paymentOption},	#{receiverName}, #{receiverPhone},
 					  #{divyAddr}, #{divyRequest}, 1,
-					  SYSDATE, #{divyDate}, #{stock} )
+					  SYSDATE, #{divyDate} )
 	</insert>
 	
-	<update id="sold" parameterType="purchase">
+	<update id="sold" parameterType="product">
 		UPDATE
 		stock
 		<set>
 		stock = (stock-#{stock}), sales_volume = (sales_volume+#{stock})
 		</set>
-		WHERE prod_no = #{purchaseProd.prodNo}
+		WHERE prod_no = #{prodNo}
 	</update>
 	
 	<update id="orderCancel" parameterType="purchase">
@@ -61,13 +67,11 @@
 	SELECT
 	tr.tran_no, tr.prod_no, tr.buyer_id, tr.payment_option, tr.receiver_name,
 	tr.receiver_phone, tr.demailaddr, tr.order_data, tr.dlvy_date, tr.dlvy_request,
-	tr.tran_status_code, tr.stock,
-	pd.prod_name, pd.image_file, pd.price, pd.prod_detail
+	tr.tran_status_code, tr.stock, tr.products
 	FROM
-	transaction tr, product pd
+	transaction tr
 	WHERE
-	tr.prod_no=pd.prod_no
-	AND tr.tran_no = #{value}
+	tr.tran_no = #{value}
 	</select>
 	
 	<select id="getPurchase2" parameterType="int" resultMap="purchaseMap">

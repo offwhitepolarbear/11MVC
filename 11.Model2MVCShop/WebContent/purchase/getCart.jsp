@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=euc-kr"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -77,17 +78,133 @@
 				}
 			);
 	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
 	  }
+  $(function(){
+	//전체체크 클릭시
+	  $("#checkAll").on('click', function(){
+		  alert("전체체크 클릭됨");
+		  $("[type='checkbox']").prop( 'checked',true);
+	  });
+	  //체크해제 클릭시
+	$("#checkNone").on('click', function(){
+		  alert("체크해제 클릭됨");
+		  $("[type='checkbox']").prop( 'checked',false);
+	  });
+	  
+	  
+	  
+	  //장바구니 수량감소 버튼액션
+	  $(".minus").on('click', function(){
+		  var count = $(".minus").index(this);	  
+		  var stocked = $($(".stock")[count]).val();
+		  //alert(stock);
+		  var prodNoJson = $($("[type='checkbox']")[count]).val();
+		  stocked = parseInt(stocked);
+			 var change = stocked-1;
+			 if(change==0){
+				 alert("카트에 1개 미만은 담을 수 없습니다.");
+			 }
+			 else{
+				var stockJson=change;
+				var jsoned = {prodNo : prodNoJson, stock : stockJson};
+				var stringified = JSON.stringify(jsoned);
+				$.ajax(
+				{
+				type : "POST",
+				url : "/purchase/json/updateCartStock",
+				data : stringified,
+				contentType: "application/json", //보내는 컨텐츠의 타입
+				//dataType : "json",      //받아올 데이터의 타입 필요없음
+				success : function(serverData, status) {
+									//alert(status);
+									//alert("server에서 온 Data : \n" + serverData);
+									//var JSONData = JSON.stringify(serverData);	
+									//alert("JSONData = \n"+	JSONData);
+									//alert(serverData.stock);
+									//alert(serverData.prodName);
+									//alert(serverData.productNames);
+									$($(".stock")[count]).val(change);
+									//$("#cartingMsg").text("제품번호"+$("#prodNo").text()+"인 제품"+$("#cartIn").val()+"개가 카트에 담겼어요");
+									 //$("#carting").empty();
+									// $("#cartext").text("카트열기");
+									
+								},
+				error : function(request,status,error){
+							        alert("에러남 : "+error);
+							       }
+				}
+			);
+			 
+			 //alert($($(".stock")[count]).val());
+			// alert(prodNoJson);
 
+			 }
+	  }
+	  );
+	  
+	  //장바구니 수량 증가 액션
+	  $(".plus").on('click', function(){
+		  var count = $(".plus").index(this)	
+		  var stocked = $($(".stock")[count]).val();
+		  var prodNoJson = $($("[type='checkbox']")[count]).val();
+		  //alert(stock);
+		  stocked = parseInt(stocked);
+		 var change =  stocked+1;
+		// alert(change);
+		var stockJson=change;
+		var jsoned = {prodNo : prodNoJson, stock : stockJson};
+				var stringified = JSON.stringify(jsoned);
+				$.ajax(
+				{
+				type : "POST",
+				url : "/purchase/json/updateCartStock",
+				data : stringified,
+				contentType: "application/json", //보내는 컨텐츠의 타입
+				//dataType : "json",      //받아올 데이터의 타입 필요없음
+				success : function(serverData, status) {
+									//alert(status);
+									//alert("server에서 온 Data : \n" + serverData);
+									//var JSONData = JSON.stringify(serverData);	
+									//alert("JSONData = \n"+	JSONData);
+									//alert(serverData.stock);
+									//alert(serverData.prodName);
+									//alert(serverData.productNames);
+									$($(".stock")[count]).val(change);
+									//$("#cartingMsg").text("제품번호"+$("#prodNo").text()+"인 제품"+$("#cartIn").val()+"개가 카트에 담겼어요");
+									// $("#carting").empty();
+									 //$("#cartext").text("카트열기");
+									
+								},
+				error : function(request,status,error){
+							        alert("에러남 : "+error);
+							       }
+				}
+			);
+		 
+		 //alert(prodNoJson);
+		// alert($($(".stock")[count]).val());
+	  }
+	  );
+	$("#goToBuy").on('click', function(){
+		//alert("눌렀어");	
+		var products = "";
+				$("[type='checkbox']:checked").each(function() { 
+					var count = $("[type='checkbox']").index(this);
+					var prodNo = $(this).val();
+					products += prodNo;
+					products += "a";
+					products += $($(".stock")[count]).val();
+					products += "n";					
+					//alert(products);	
+					$("#products").val(products);
+				}	
+			);
+				
+				$("form").attr("method" , "POST").attr("action" , "/purchase/purchaseAll").submit();
+		}	
+	);
 
+});
 </script>
 
 </head>
@@ -110,13 +227,12 @@
 	    
 		    <div class="col-md-6 text-left">
 		    	<p class="text-primary">
-		    		전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
 		    	</p>
 		    </div>
 		    
 		    <div class="col-md-6 text-right">
 			    <form class="form-inline" name="detailForm">
-			    
+			    <input type="hidden" name='products' id='products' value=''>
 				</form>
 	    	</div>
 	    	
@@ -140,6 +256,7 @@
 <thead>
     <tr>
      <!-- <th scope="col" class="success">#</th> -->
+     <th scope="col" class="success">체크박스</th>
       <th scope="col" class="active">이미지</th>
       <th scope="col" class="warning">제품명</th>
       <th scope="col" >가격</th>
@@ -163,8 +280,10 @@
 		
 
 <!-- On cells (`td` or `th`) -->
+
 <tr class='productCount' id='${product.prodNo}'>
   <!-- <td class="success col-md-1">${i}</td> -->
+  <td class="success col-sm-1 col-md-1"><input type="checkbox" value="${product.prodNo}"></td>
   <td class="active col-sm-3 col-md-3"><img class="img-rounded" src="../images/uploadFiles/16by9.png" 
 				 style="height: 100px;
 				 background:
@@ -176,13 +295,13 @@
   <td class="info col-xs-2 col-sm-2 col-md-2"> 
   <div class="input-group">
       	<span class="input-group-btn">
-	        <button class="btn btn-default" type="button" style="height: 100%;">
+	        <button class="btn btn-default minus" type="button" style="height: 100%;" name='minus'>
 	        <i class=' glyphicon glyphicon-minus-sign'></i>
 	        </button>
       	</span>
-      <input type="text" class="form-control" value='${product.stock}' placeholder="갯수를 입력해주세요" style="width: 100%;">
+      <input type="text" class="form-control stock" value='${product.stock}' placeholder="갯수를 입력해주세요" style="width: 100%;" readonly>
 		<span class="input-group-btn">
-	        <button class="btn btn-default" type="button" style="height: 100%;">
+	        <button class="btn btn-default plus" type="button" style="height: 100%;"name ='plus'>
 	        <i class=' glyphicon glyphicon-plus-sign'></i>
 	        </button>
       	</span>
@@ -203,7 +322,11 @@
 	  
  	</div>
  	<!--  화면구성 div End /////////////////////////////////////-->
- 	
+ 	<br/>
+ 	 &nbsp; <button type="button" class="btn btn-success" id='checkAll'><i class='glyphicon glyphicon-ok-circle'></i>전체선택</button>
+ 	 <button type="button" class="btn btn-danger"  id='checkNone'><i class='glyphicon glyphicon-remove-circle'></i>전체해제</button>
+ 	<br/>
+ 	<button type="button" class="btn btn-primary center-block btn-block" style="width: 50%" id='goToBuy'>선택한 거 살게</button>
 
 </body>
 </html>

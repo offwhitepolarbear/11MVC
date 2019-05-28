@@ -59,7 +59,7 @@ $(function() {
 					 $("#cartingMsg").text("유효성체크에 걸리면 이 메시지가 뜹니다");
 				}				 
 				else{
-					 alert($("#cartIn").val());
+					//alert($("#cartIn").val());
 				///ajax를 여기서 합시다~//
 				
 				var prodNoJson=$("#prodNo").text().trim();
@@ -80,7 +80,7 @@ $(function() {
 									//alert("JSONData = \n"+	JSONData);
 									//alert(serverData.stock);
 									//alert(serverData.prodName);
-									alert(serverData.productNames);
+									//alert(serverData.productNames);
 									
 									$("#cartingMsg").text("제품번호"+$("#prodNo").text()+"인 제품"+$("#cartIn").val()+"개가 카트에 담겼어요");
 									 $("#carting").empty();

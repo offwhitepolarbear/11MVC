@@ -17,6 +17,7 @@ public class Purchase {
 	private int tranNo;
 	
 	private int stock;
+	private String products;
 	
 	
 	public Purchase(){
@@ -106,5 +107,13 @@ public class Purchase {
 
 	public void setStock(int stock) {
 		this.stock = stock;
+	}
+
+	public String getProducts() {
+		return products;
+	}
+
+	public void setProducts(String products) {
+		this.products = products;
 	}
 }

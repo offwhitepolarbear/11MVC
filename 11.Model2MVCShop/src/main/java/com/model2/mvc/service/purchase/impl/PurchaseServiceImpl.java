@@ -37,11 +37,11 @@ public class PurchaseServiceImpl implements PurchaseService{
 	}
 	
 	@Override
-	public int stockPurchase(Purchase purchase) throws Exception {
+	public int stockPurchase(Product product) throws Exception {
 		// TODO Auto-generated method stub
-		return purchaseDao.stockPurchase(purchase);
+		return purchaseDao.stockPurchase(product);
 	}
-	
+		
 	@Override
 	public int orderCancel(Purchase purchase) throws Exception {
 		// TODO Auto-generated method stub
@@ -124,5 +124,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 		// TODO Auto-generated method stub
 		purchaseDao.updateCart(cart);
 	}
+
+	
 
 }

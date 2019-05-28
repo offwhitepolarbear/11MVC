@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Cart;
 import com.model2.mvc.service.domain.Purchase;
+import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.purchase.PurchaseDao;
 @Repository
 public class PurchaseDaoImpl implements PurchaseDao{
@@ -33,9 +34,9 @@ public class PurchaseDaoImpl implements PurchaseDao{
 	}
 	
 	@Override
-	public int stockPurchase(Purchase purchase) throws Exception {
+	public int stockPurchase(Product product) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.update("PurchaseMapper.sold", purchase);
+		return sqlSession.update("PurchaseMapper.sold", product);
 	}
 	
 	@Override
@@ -115,7 +116,5 @@ public class PurchaseDaoImpl implements PurchaseDao{
 		// TODO Auto-generated method stub
 		sqlSession.update("CartMapper.updateCart", cart);
 	}
-	
-
 
 }

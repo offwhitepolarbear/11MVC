@@ -68,33 +68,70 @@ public class PurchaseController {
 	
 	//@RequestMapping("/addPurchase.do")
 	@RequestMapping( value="addPurchase", method=RequestMethod.POST )
-	public String addPurchase( @ModelAttribute("purchase") Purchase purchase, @ModelAttribute("user") User user, @ModelAttribute("product") Product product) throws Exception {
+	public String addPurchase( @ModelAttribute("purchase") Purchase purchase, HttpSession session) throws Exception {
 
 		System.out.println("/purchase/addPurchase : POST");
 		//Business Logic
+		User user= (User)session.getAttribute("user");
 		purchase.setBuyer(user);
 		purchase.setDivyDate(purchase.getDivyDate().substring(2).replace("-", "/"));
-		purchase.setPurchaseProd(product);
 		purchaseService.addPurchase(purchase);
-		purchaseService.stockPurchase(purchase);
 		
-		return "redirect:/purchase/listPurchase";
+		
+		List<String> prodNos = new ArrayList<String>();
+		List<String> stocks = new ArrayList<String>();
+		
+		String[] parseProducts = purchase.getProducts().split("n");
+
+			for (int i = 0; i < parseProducts.length; i++) {
+				String[] parseProd = parseProducts[i].split("a");
+				prodNos.add(parseProd[0]);
+				stocks.add(parseProd[1]);
+			}
+			
+			for (int i=0; i<prodNos.size();i++) {
+				Product product = new Product();
+				product.setProdNo(Integer.parseInt(prodNos.get(i)));
+				product.setStock(Integer.parseInt(stocks.get(i)));
+				purchaseService.stockPurchase(product);
+			}
+			
+		return "redirect:/purchase/getPurchase?tranNo="+purchase.getTranNo();
 	}
 	
 	//@RequestMapping("/getPurchase.do")
 	@RequestMapping( value="getPurchase")
 	public String getPurchase( @RequestParam("tranNo") String tranNo , Model model ) throws Exception {
 		
-		System.out.println("/getPurchaseo");
+		System.out.println("/getPurchase/tranNo");
 		//Business Logic
 		Purchase purchase = purchaseService.getPurchase(Integer.parseInt(tranNo));
 		purchase.setDivyDate(purchase.getDivyDate().substring(0,10));
 		// Model 과 View 연결
+		
+		List<String> prodNos = new ArrayList<String>();
+		List<String> stocks = new ArrayList<String>();
+		List<Product> purchaseList = new ArrayList<Product>();
+
+		String products = purchase.getProducts();
+		
+		String[] parseProducts = products.split("n");
+
+			for (int i = 0; i < parseProducts.length; i++) {
+				String[] parseProd = parseProducts[i].split("a");
+				prodNos.add(parseProd[0]);
+				stocks.add(parseProd[1]);
+			}
+			
+			for (int i=0; i<prodNos.size();i++) {
+				Product product = productService.getProduct(Integer.parseInt(prodNos.get(i)));
+				product.setStock(Integer.parseInt(stocks.get(i)));
+				purchaseList.add(product);
+			}
+		
 		model.addAttribute("purchase", purchase);
+		model.addAttribute("purchaseList", purchaseList);
 		
-		int totalPrice = purchase.getStock()*purchase.getPurchaseProd().getPrice();
-		
-		model.addAttribute("totalPrice", totalPrice);
 		return "forward:/purchase/getPurchase.jsp";
 	}
 	
@@ -247,17 +284,82 @@ public class PurchaseController {
 				cartingProduct.setStock(Integer.parseInt(stocks.get(i)));
 				cartList.add(cartingProduct);
 			}
-			model.addAttribute("cartList",cartList);
-		}
-		
-		if(beforeCart.equals("empty")) {
-			model.addAttribute("cartList",cartList);
-			return "forward:/purchase/getCart.jsp";
 			
 		}
-		
+	
+		model.addAttribute("cartList",cartList);			
 		
 		return "forward:/purchase/getCart.jsp";
 	}
+	
+	@RequestMapping(value = "cartPurchase", method = RequestMethod.POST)
+	public String cartPurchase(@RequestParam String products,HttpSession session, Model model) throws Exception {
+		System.out.println("이거만 제대로 찍히면 된다☆★☆★☆★☆★ : "+products);
+		//inputname을 프로덕츠로 해서 던져줍시다.
+		List<String> prodNos = new ArrayList<String>();
+		List<String> stocks = new ArrayList<String>();
+		List<Product> cartList = new ArrayList<Product>();
+
+		User user = (User) session.getAttribute("user");
+
+		Cart cart = new Cart();
+		cart.setUserId(user.getUserId());
+		//Cart reCart = purchaseService.getCart(cart);
+
+		String beforeCart = products;
+		
+		if(!beforeCart.equals("empty")) {
+		String[] parseCart = beforeCart.split("n");
+
+			for (int i = 0; i < parseCart.length; i++) {
+				String[] parseProd = parseCart[i].split("a");
+				prodNos.add(parseProd[0]);
+				stocks.add(parseProd[1]);
+			}
+			
+			for (int i=0; i<prodNos.size();i++) {
+				Product cartingProduct = productService.getProduct(Integer.parseInt(prodNos.get(i)));
+				cartingProduct.setStock(Integer.parseInt(stocks.get(i)));
+				cartList.add(cartingProduct);
+			}
+			
+		}
+	
+		model.addAttribute("cartList",cartList);			
+		
+		return "forward:/purchase/cartPurchase.jsp";
+	}
+	
+	
+	/////구매확인 로직 갑시다.
+	@RequestMapping(value = "purchaseAll", method = RequestMethod.POST)
+	public String purchaseAll(@RequestParam String products, Model model) throws Exception {
+		//inputname을 프로덕츠로 해서 던져줍시다.
+		List<String> prodNos = new ArrayList<String>();
+		List<String> stocks = new ArrayList<String>();
+		List<Product> purchaseList = new ArrayList<Product>();
+
+		
+		String[] parseProducts = products.split("n");
+
+			for (int i = 0; i < parseProducts.length; i++) {
+				String[] parseProd = parseProducts[i].split("a");
+				prodNos.add(parseProd[0]);
+				stocks.add(parseProd[1]);
+			}
+			
+			for (int i=0; i<prodNos.size();i++) {
+				Product product = productService.getProduct(Integer.parseInt(prodNos.get(i)));
+				product.setStock(Integer.parseInt(stocks.get(i)));
+				purchaseList.add(product);
+			}
+		
+		model.addAttribute("purchaseList", purchaseList);	
+		model.addAttribute("products", products);	
+		
+		return "forward:/purchase/cartPurchase.jsp";
+	}
+	
+	
 	
 }

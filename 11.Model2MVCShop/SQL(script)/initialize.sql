@@ -222,3 +222,107 @@ INSERT INTO cart (user_id) VALUES ('user16');
 INSERT INTO cart (user_id) VALUES ('user17');
 INSERT INTO cart (user_id) VALUES ('user18');
 INSERT INTO cart (user_id) VALUES ('user19');
+
+ALTER TABLE transaction ADD(products VARCHAR2(4000) NOT NULL);.
+
+ALTER TABLE transaction ADD(products VARCHAR2(4000));
+
+UPDATE 
+transaction
+set products='10140a333n'
+WHERE tran_no=10100;
+
+UPDATE 
+transaction
+set products='10160a4n'
+WHERE tran_no=10101;
+
+UPDATE 
+transaction
+set products='10140a5n'
+WHERE tran_no=10102;
+
+UPDATE 
+transaction
+set products='10120a18n'
+WHERE tran_no=10080;
+
+UPDATE 
+transaction
+set products='10029a1n'
+WHERE tran_no=10001;
+
+UPDATE 
+transaction
+set products='10081a1n'
+WHERE tran_no=10020;
+
+UPDATE 
+transaction
+set products='10057a1n'
+WHERE tran_no=10021;
+
+UPDATE 
+transaction
+set products='10100a9n'
+WHERE tran_no=10041;
+
+UPDATE 
+transaction
+set products='10052a1n'
+WHERE tran_no=10005;
+
+UPDATE 
+transaction
+set products='10000a1n'
+WHERE tran_no=10000;
+
+UPDATE 
+transaction
+set products='10056a1n'
+WHERE tran_no=10011;
+
+UPDATE 
+transaction
+set products='10000a1n'
+WHERE tran_no=10006;
+
+UPDATE 
+transaction
+set products='10032a1n'
+WHERE tran_no=10003;
+
+UPDATE 
+transaction
+set products='10033a1n'
+WHERE tran_no=10004;
+
+UPDATE 
+transaction
+set products='10060a1n'
+WHERE tran_no=10007;
+
+UPDATE 
+transaction
+set products='10120a6n'
+WHERE tran_no=10060;
+
+UPDATE 
+transaction
+set products='10100a17n'
+WHERE tran_no=10061;
+
+UPDATE 
+transaction
+set products='10093a223n'
+WHERE tran_no=10062;
+
+UPDATE 
+transaction
+set products='10096a111n'
+WHERE tran_no=10063;
+
+UPDATE 
+transaction
+set products='10100a3n'
+WHERE tran_no=10064;
