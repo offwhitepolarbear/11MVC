@@ -65,9 +65,9 @@
 		
 	<select id="getPurchase" parameterType="int" resultMap="purchaseMap">
 	SELECT
-	tr.tran_no, tr.prod_no, tr.buyer_id, tr.payment_option, tr.receiver_name,
+	tr.tran_no, tr.buyer_id, tr.payment_option, tr.receiver_name,
 	tr.receiver_phone, tr.demailaddr, tr.order_data, tr.dlvy_date, tr.dlvy_request,
-	tr.tran_status_code, tr.stock, tr.products
+	tr.tran_status_code, tr.products
 	FROM
 	transaction tr
 	WHERE
@@ -119,8 +119,8 @@
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(		SELECT
-	tran_no, prod_no, buyer_id, payment_option, receiver_name,
-	receiver_phone, demailaddr, dlvy_request, tran_status_code, stock
+	tran_no, products, buyer_id, payment_option, receiver_name,
+	receiver_phone, demailaddr, dlvy_request, tran_status_code
 	FROM transaction
 	<where>
 	buyer_id = #{searchKeyword}
@@ -134,7 +134,9 @@
 	  	SELECT COUNT(*)
 	  	FROM(	SELECT tran_no
 						FROM transaction
-						WHERE buyer_id = #{searchKeyword}
+						<where>
+	buyer_id = #{searchKeyword}
+	</where>
 					) countTable						
 	 </select>
 	

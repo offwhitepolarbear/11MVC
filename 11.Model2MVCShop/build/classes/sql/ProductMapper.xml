@@ -103,13 +103,6 @@
 	FROM product pd, stock s
 	<where>
 		pd.prod_no=s.prod_no
-		<if test="listSale==0"></if>
-		<if test="listSale==1">
-		AND (tr.tran_status_code IS NULL OR tr.tran_status_code =4)
-		</if>
-		<if test="listSale==2">
-		AND (tr.tran_status_code=1 OR tr.tran_status_code=2 OR tr.tran_status_code=3)
-		</if>
 		<if test="searchCondition == 0 and searchKeyword !='' ">
 			AND pd.prod_no like  '%' ||#{searchKeyword}|| '%'
 		</if>
@@ -137,19 +130,11 @@
 	
 	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
-	  	FROM(	SELECT pd.prod_no,tr.tran_status_code, s.stock
-						FROM product pd, transaction tr, stock s
+	  	FROM(	SELECT pd.prod_no, s.stock
+						FROM product pd, stock s
 	<where>
-		pd.prod_no=tr.prod_no(+)
-		AND pd.prod_no=s.prod_no
+		pd.prod_no=s.prod_no
 		
-		<if test="listSale==0"></if>
-		<if test="listSale==1">
-		AND (tr.tran_status_code IS NULL OR tr.tran_status_code =4)
-		</if>
-		<if test="listSale==2">
-		AND (tr.tran_status_code=1 OR tr.tran_status_code=2 OR tr.tran_status_code=3)
-		</if>
 		<if test="searchCondition == 0 and searchKeyword !='' ">
 			AND pd.prod_no like  '%' ||#{searchKeyword}|| '%'
 		</if>

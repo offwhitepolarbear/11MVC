@@ -175,8 +175,10 @@ margin-left: 0px;
           <tr>
             <th align="center">No</th>
  <th align="left" >거래번호</th>
+<!-- 
  <th align="left" >제품번호</th>
- <th align="left" >구매수량</th>
+ <th align="left" >구매수량</th> 
+ -->
  <th align="left" >회원ID</th>
  <th align="left" >회원명</th>
  <th align="left" >전화번호</th>
@@ -193,8 +195,10 @@ margin-left: 0px;
 			<tr>
 			  <td align="center">${ i }</td>
 			  <td align="left" class="tranNo">${purchase.tranNo}</td>
-			  <td align="left" class="prodNo">${purchase.purchaseProd.prodNo}</td>
-			  <td align="left" class="stock">${purchase.stock}</td>
+			<!--  
+			<td align="left" class="prodNo">${purchase.purchaseProd.prodNo}</td>
+			  <td align="left" class="stock">${purchase.stock}</td> 
+			  -->
 			  <td align="left">${user.userId}</td>
 			  <td align="left">${purchase.receiverName}</td>
 			  <td align="left">${purchase.receiverPhone}</td>
