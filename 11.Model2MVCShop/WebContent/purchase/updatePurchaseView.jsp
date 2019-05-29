@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 
 <html>
@@ -14,11 +16,6 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style>
-	 body {
-            padding-top : 50px;
-        }
-    </style>
     
        <!--  ///////////////////////// 데이트피커용 추가 CDN 입니다////////////////////// -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
@@ -71,56 +68,61 @@ $(function(){
 	
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
+<!-- table Start /////////////////////////////////////-->
+
+		<div class="table-responsive">
+			<table class='table table-hover'>
+						
+<thead>
+    <tr>
+     <!-- <th scope="col" class="success">#</th> -->
+     
+      <th scope="col" class="active">이미지</th>
+      <th scope="col" class="warning">제품명</th>
+      <th scope="col" >가격</th>
+      <th scope="col" class="info">갯수</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+<!-- 				
+<tr class="active">회색</tr>
+<tr class="success">초록</tr>
+<tr class="warning">주황노랑</tr>
+<tr class="danger">빨강</tr>
+<tr class="info">파랑</tr>
+ -->
 	
-		<div class="page-header">
-	       <h3 class=" text-info">구매정보수정</h3>
-	       <h5 class="text-muted">구매정보<strong class="text-danger">수정</strong>해주세요</h5>
-	    </div>
-	
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>상품번호</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.purchaseProd.prodNo}</div>
-		</div>
 		
-		<hr/>
+		  <c:set var="i" value="0" />
+		  <c:forEach var="product" items="${purchaseList}">
+			<c:set var="i" value="${ i+1 }" />
 		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>상품명</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.purchaseProd.prodName}</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>상품이미지</strong></div>
-			<div class="col-xs-8 col-md-4"><img class="img-rounded" src="../images/uploadFiles/16by9.png" 
-				 style="width:100%;
+
+<!-- On cells (`td` or `th`) -->
+
+<tr class='productCount' id='${product.prodNo}'>
+  <!-- <td class="success col-md-1">${i}</td> -->
+  <td class="active col-xs-2 col-sm-2 col-md-2"><img class="img-rounded" src="../images/uploadFiles/16by9.png" 
+				 style="height: 100px;
 				 background:
-				 url('../images/uploadFiles/${purchase.purchaseProd.fileName}'), 
+				 url('../images/uploadFiles/${product.fileName}'), 
 				 url('../images/uploadFiles/noimg.JPG');
-				  no-repeat center center; background-size:cover;"></div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2 "><strong>상품상세정보</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.purchaseProd.prodDetail}</div>
-		</div>
-		
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>가격</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.purchaseProd.price}</div>
-		</div>
-		<hr/>
-		
-		<div class="row">
-	  		<div class="col-xs-4 col-md-2"><strong>구매갯수</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.stock}</div>
-		</div>
-		<hr/>
+				  no-repeat center center; background-size:cover;"></td>
+  <td class="warning col-xs-2 col-sm-2 col-md-2">${product.prodName}</td>
+  <td class="col-xs-2 col-sm-2 col-md-2"><i class="glyphicon glyphicon-usd" aria-hidden="true"></i> ${product.price}</td>
+  <td class="info col-xs-2 col-sm-2 col-md-2">${product.stock} 개</td>
+</tr>
+
+    
+          </c:forEach>
+   
+          </tbody>
+          </table>
+         
+   </div>
+
+	  <!--  table End /////////////////////////////////////-->
 
 <form>
 <input type="hidden" name="tranNo" value="${purchase.tranNo}" />

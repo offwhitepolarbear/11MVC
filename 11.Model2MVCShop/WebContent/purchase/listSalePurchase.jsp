@@ -107,11 +107,11 @@
 	function cancelOrder(count){
 		var cancelButton = "<button type='button' class='btn btn-danger btn-sm btn-block'><i class='glyphicon glyphicon-remove-sign' aria-hidden='true'></i>주문취소</button>";
 		var tranNoJson = $($(".tranNo")[count]).text().trim();		
-		var prodNoJson = $($(".prodNo")[count]).text().trim();
-		var stockJson = $($(".stock")[count]).text().trim();
+		//var prodNoJson = $($(".prodNo")[count]).text().trim();
+		var productsJson = $($(".products")[count]).text().trim();
+		//var stockJson = $($(".stock")[count]).text().trim();
 		var jsoned = {	tranNo : tranNoJson ,
-								stock : stockJson ,
-								purchaseProd : { prodNo: prodNoJson },
+								products : productsJson ,
 								tranCode : 4
 								};
 		var stringJSON = JSON.stringify(jsoned);
@@ -199,11 +199,14 @@
         <thead>
           <tr>
             <th align="center">No</th>
+          <th align="left" style="display: none;">상품코드</th>
  <th align="left" >거래번호</th>
+ <!-- 
  <th align="left" >제품명</th>
  <th align="left" >제품번호</th>
  <th align="left" >가격</th>
  <th align="left" >구매갯수</th>
+  -->
  <th align="left" >회원ID</th>
  <th align="left" >배송주소</th>
  <th align="left" >물품현황</th>
@@ -217,12 +220,15 @@
 		  <c:forEach var="purchase" items="${list}">
 			<c:set var="i" value="${ i+1 }" />
 			<tr>
-			  <td align="center">${ i }</td>
-			  <td align="left"><span class="tranNo">${purchase.tranNo}</span></td>
+			<td align="center">${ i }</td>
+			<td align="left"style="display: none;"><span class="products">${purchase.products}</span></td>	  
+			  <td align="left" ><span class="tranNo">${purchase.tranNo}</span></td>
+			  <!-- 
 			  <td align="left"><span class="prodName">${purchase.purchaseProd.prodName}</span></td>
 			  <td align="left"><span class="prodNo">${purchase.purchaseProd.prodNo}</span></td>
 			  <td align="left">${purchase.purchaseProd.price}</td>
 			  <td align="left" class="stock">${purchase.stock}</td>
+			   -->
 			  <td align="left">${purchase.buyer.userId}</td>
 			  <td align="left">${purchase.divyAddr}</td>			  
 			  <td align="left" class="tranStatus">

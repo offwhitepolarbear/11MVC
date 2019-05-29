@@ -54,13 +54,13 @@
 		WHERE prod_no = #{prodNo}
 	</update>
 	
-	<update id="orderCancel" parameterType="purchase">
+	<update id="orderCancel" parameterType="product">
 		UPDATE
 		stock
 		<set>
 		stock = (stock+#{stock}), sales_volume = (sales_volume-#{stock})
 		</set>
-		WHERE prod_no = #{purchaseProd.prodNo}
+		WHERE prod_no = #{prodNo}
 	</update>
 		
 	<select id="getPurchase" parameterType="int" resultMap="purchaseMap">
@@ -132,11 +132,12 @@
 	
 	<select  id="getTotalCount"  parameterType="search"	 resultType="int">
 	  	SELECT COUNT(*)
-	  	FROM(	SELECT tran_no
-						FROM transaction
-						<where>
-	buyer_id = #{searchKeyword}
-	</where>
+	  	FROM(	SELECT
+	  				tran_no
+					FROM transaction
+					<where>
+					buyer_id = #{searchKeyword}
+					</where>
 					) countTable						
 	 </select>
 	
@@ -144,25 +145,26 @@
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT
-	  	tr.tran_no, pd.prod_name, pd.price, pd.prod_no,
-	  	tr.buyer_id, tr.demailaddr, tr.dlvy_request, tr.tran_status_code, tr.stock
-	  	FROM product pd, transaction tr
-	  	WHERE pd.prod_no=tr.prod_no
+		tran_no, products, buyer_id, payment_option, receiver_name,
+		receiver_phone, demailaddr, dlvy_request, tran_status_code
+		FROM transaction
+		<where>
 	  	<if test="listSale==0">
-	  	AND tr.tran_status_code IS NOT NULL
+	  	tran_status_code IS NOT NULL
 	  	</if>
 		<if test="listSale==1">
-		AND tr.tran_status_code =1
+		tran_status_code =1
 		</if>
 		<if test="listSale==2">
-		AND tr.tran_status_code =2
+		tran_status_code =2
 		</if>
 		<if test="listSale==3">
-		AND tr.tran_status_code =3
+		tran_status_code =3
 		</if>
 		<if test="listSale==4">
-		AND tr.tran_status_code =4
+		tran_status_code =4
 		</if>
+		</where>
 	  	ORDER BY tran_no DESC ) inner_table
 		WHERE ROWNUM &lt;= #{endRowNum} )
 		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
@@ -172,7 +174,7 @@
 	  	SELECT COUNT(*)
 	  	FROM(	SELECT tran_no
 						FROM transaction
-						WHERE 
+						<where>
 						<if test="listSale==0">
 						tran_status_code IS NOT NULL
 						</if>
@@ -188,6 +190,7 @@
 						<if test="listSale==4">
 						tran_status_code =4
 						</if>
+						</where>
 					) countTable						
 	 </select>
 	

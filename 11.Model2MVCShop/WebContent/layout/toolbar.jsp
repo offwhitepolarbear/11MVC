@@ -149,10 +149,7 @@
 		 	});
 		 	
 		 	$( "a:contains('etc...')" ).on("click" , function() {
-		 		// alert(document.body.clientHeight);
-				 alert(document.body.clientWidth);
-				alert(window.innerWidth);
-				//alert(window.innerHeight);
+		 		
 		 	});
 		 	
 		 	

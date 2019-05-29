@@ -1,6 +1,7 @@
 package com.model2.mvc.web.purchase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -73,18 +74,34 @@ public class PurchaseController {
 		System.out.println("/purchase/addPurchase : POST");
 		//Business Logic
 		User user= (User)session.getAttribute("user");
+		Cart cart = new Cart();
+		cart.setUserId(user.getUserId());
+		cart = purchaseService.getCart(cart);
+		String fromCart = cart.getProductNames();
+		String[] cartProducts = fromCart.split("n");
+		String reCarting = "";
+		List<String> cartString = new ArrayList<String>(Arrays.asList(cartProducts));
+		List<String> cartProdNos = new ArrayList<String>();
+		List<String> cartStocks = new ArrayList<String>();
+		
+		for (int i = 0; i < cartProducts.length; i++) {
+			String[] parseProd = cartProducts[i].split("a");
+			cartProdNos.add(parseProd[0]);
+			cartStocks.add(parseProd[1]);
+		}
+				
 		purchase.setBuyer(user);
+		
 		purchase.setDivyDate(purchase.getDivyDate().substring(2).replace("-", "/"));
 		purchaseService.addPurchase(purchase);
-		
-		
+	
 		List<String> prodNos = new ArrayList<String>();
 		List<String> stocks = new ArrayList<String>();
 		
 		String[] parseProducts = purchase.getProducts().split("n");
 
 			for (int i = 0; i < parseProducts.length; i++) {
-				String[] parseProd = parseProducts[i].split("a");
+				String[] parseProd = parseProducts[i].split("a");				
 				prodNos.add(parseProd[0]);
 				stocks.add(parseProd[1]);
 			}
@@ -94,7 +111,22 @@ public class PurchaseController {
 				product.setProdNo(Integer.parseInt(prodNos.get(i)));
 				product.setStock(Integer.parseInt(stocks.get(i)));
 				purchaseService.stockPurchase(product);
+				for (int b = 0; b< cartString.size(); b++) {
+					if(cartProducts[b].indexOf(prodNos.get(i))!=-1) {
+						cartString.remove(cartProducts[b]);
+					}
+				}
+				
 			}
+						
+			for(int i=0; i<cartString.size();i++) {
+				reCarting += cartString.get(i);
+			}
+			
+			System.out.println(reCarting+"리카팅☆★◇◆☆★◇◆☆★◇◆☆★◇◆");
+			cart.setProductNames(reCarting);
+			cart.setUserId(user.getUserId());
+			purchaseService.updateCart(cart);
 			
 		return "redirect:/purchase/getPurchase?tranNo="+purchase.getTranNo();
 	}
@@ -142,8 +174,31 @@ public class PurchaseController {
 		System.out.println("/purchase/updatePurchase : POST");
 		//Business Logic
 		Purchase purchase = purchaseService.getPurchase(Integer.parseInt(tranNo));
+		purchase.setDivyDate(purchase.getDivyDate().substring(0,10));
 		// Model 과 View 연결
+		
+		List<String> prodNos = new ArrayList<String>();
+		List<String> stocks = new ArrayList<String>();
+		List<Product> purchaseList = new ArrayList<Product>();
+
+		String products = purchase.getProducts();
+		
+		String[] parseProducts = products.split("n");
+
+			for (int i = 0; i < parseProducts.length; i++) {
+				String[] parseProd = parseProducts[i].split("a");
+				prodNos.add(parseProd[0]);
+				stocks.add(parseProd[1]);
+			}
+			
+			for (int i=0; i<prodNos.size();i++) {
+				Product product = productService.getProduct(Integer.parseInt(prodNos.get(i)));
+				product.setStock(Integer.parseInt(stocks.get(i)));
+				purchaseList.add(product);
+			}
+		
 		model.addAttribute("purchase", purchase);
+		model.addAttribute("purchaseList", purchaseList);
 		
 		return "forward:/purchase/updatePurchaseView.jsp";
 	}
@@ -185,7 +240,7 @@ public class PurchaseController {
 			}
 				
 	}
-	
+	/*
 	@RequestMapping( value="orderCancel/{tranNo}/{role}" )
 	public String orderCancel(@PathVariable String tranNo, @PathVariable String role) throws Exception{
 
@@ -204,6 +259,7 @@ public class PurchaseController {
 			}
 				
 	}
+	*/
 	
 		
 	//@RequestMapping("/listPurchase.do")

@@ -98,10 +98,25 @@ public class PurchaseRestController {
 	public Purchase orderCancel(@RequestBody Purchase purchase) throws Exception {
 
 		System.out.println("purchase/json/orderCancel : POST ½ÇÇàµÊ");
-		System.out.println(purchase);
+			
+		List<String> prodNos = new ArrayList<String>();
+		List<String> stocks = new ArrayList<String>();
+		
+		String[] parseProducts = purchase.getProducts().split("n");
 
-		purchaseService.orderCancel(purchase);
-
+			for (int i = 0; i < parseProducts.length; i++) {
+				String[] parseProd = parseProducts[i].split("a");
+				prodNos.add(parseProd[0]);
+				stocks.add(parseProd[1]);
+			}
+			
+			for (int i=0; i<prodNos.size();i++) {
+				Product product = new Product();
+				product.setProdNo(Integer.parseInt(prodNos.get(i)));
+				product.setStock(Integer.parseInt(stocks.get(i)));
+				purchaseService.orderCancel(product);
+			}
+		
 		return purchase;
 	}
 

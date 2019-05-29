@@ -40,9 +40,9 @@ public class PurchaseDaoImpl implements PurchaseDao{
 	}
 	
 	@Override
-	public int orderCancel(Purchase purchase) throws Exception {
+	public int orderCancel(Product product) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.update("PurchaseMapper.orderCancel", purchase);
+		return sqlSession.update("PurchaseMapper.orderCancel", product);
 	}
 
 	@Override

@@ -43,10 +43,10 @@ public class PurchaseServiceImpl implements PurchaseService{
 	}
 		
 	@Override
-	public int orderCancel(Purchase purchase) throws Exception {
+	public int orderCancel(Product product) throws Exception {
 		// TODO Auto-generated method stub
-		purchaseDao.updateTranCode(purchase);
-		return purchaseDao.orderCancel(purchase);
+
+		return purchaseDao.orderCancel(product);
 	}
 	
 	@Override

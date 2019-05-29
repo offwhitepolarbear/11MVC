@@ -12,7 +12,7 @@ public interface PurchaseDao {
 	
 	public int stockPurchase(Product product) throws Exception;
 	
-	public int orderCancel(Purchase purchase) throws Exception;
+	public int orderCancel(Product product) throws Exception;
 	
 	public Purchase getPurchase(int tranNo) throws Exception;
 	
