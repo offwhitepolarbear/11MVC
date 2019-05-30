@@ -16,25 +16,17 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
-	
 	<!-- Bootstrap Dropdown Hover CSS -->
    <link href="/css/animate.min.css" rel="stylesheet">
    <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
     <!-- Bootstrap Dropdown Hover JS -->
    <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
-   
-   
+      
    <!-- jQuery UI toolTip 사용 CSS-->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <!-- jQuery UI toolTip 사용 JS-->
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  
-  <style>
-	  body {
-            padding-top : 50px;
-        }
-    </style>
-  
+    
   <script type="text/javascript">
   
   $(function(){
@@ -107,9 +99,7 @@
 	function cancelOrder(count){
 		var cancelButton = "<button type='button' class='btn btn-danger btn-sm btn-block'><i class='glyphicon glyphicon-remove-sign' aria-hidden='true'></i>주문취소</button>";
 		var tranNoJson = $($(".tranNo")[count]).text().trim();		
-		//var prodNoJson = $($(".prodNo")[count]).text().trim();
 		var productsJson = $($(".products")[count]).text().trim();
-		//var stockJson = $($(".stock")[count]).text().trim();
 		var jsoned = {	tranNo : tranNoJson ,
 								products : productsJson ,
 								tranCode : 4
@@ -124,7 +114,7 @@
 					data: stringJSON,
 					headers : {	"Accept" : "application/json",	"Content-Type" : "application/json"},
 					success : function(serverData , status) {
-						alert(serverData);
+						//alert(serverData);
 						$($(".tranStatus")[count]).html(cancelButton);
 						},
 					error : function(request, status, error) {

@@ -56,12 +56,12 @@ public class ProductController {
 		return "redirect:/product/addProductView.jsp";
 	}
 	
-	//@RequestMapping("/addProduct.do")
+	
 	@RequestMapping( value="addProduct", method=RequestMethod.POST )
 	public String addProduct( @ModelAttribute("product") Product product, MultipartHttpServletRequest multipartHttpServletRequest, HttpSession session) throws Exception {
 		
 		System.out.println("/product/addProduct : POST");
-		//달력조정중
+	
 		product.setManuDate(product.getManuDate().replace("/", ""));
 		List<MultipartFile> files = multipartHttpServletRequest.getFiles("uploadFile");
 		System.out.println("들어온 파일 갯수 : "+files.size());
@@ -74,10 +74,8 @@ public class ProductController {
 		}
 
 		productService.addProduct(product);
-				
-		System.out.println("☆★☆★인서트한 프로드넘 들어갔나 찍어봐☆★☆★ : "+product.getProdNo());
-				
-		return "redirect:/product/listProduct?menu=manage";
+								
+		return "redirect:/product/getProduct?prodNo="+product.getProdNo();
 	}
 	
 	@RequestMapping( value="restockView/{prodNo}", method=RequestMethod.POST )
@@ -118,10 +116,8 @@ public class ProductController {
 	@RequestMapping( value="getProduct", method=RequestMethod.GET )
 	public String getProduct(@RequestParam("prodNo") String prodNo, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		//System.out.println("/getProduct.do");
 		System.out.println("/product/getProduct : GET");
 
-		
 		String history = null;
 		Cookie[] cookies = request.getCookies();
 		System.out.println(cookies);
@@ -218,8 +214,7 @@ public class ProductController {
 		
 		Page resultPage = new Page( search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		System.out.println(resultPage);
-		//System.out.println("메뉴로 들어온거 다시 세팅해줘"+menu);
-		// Model 과 View 연결
+		
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("resultPage", resultPage);
 		model.addAttribute("search", search);

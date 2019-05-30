@@ -172,10 +172,6 @@ sales_volume	NUMBER	NOT NULL CHECK ( sales_volume >= 0 ),
 PRIMARY KEY(prod_no)
 );
 
-
-
-
-
 INSERT INTO stock
 VALUES ( 10000, 1000, 0);
 
@@ -326,3 +322,43 @@ UPDATE
 transaction
 set products='10100a3n'
 WHERE tran_no=10064;
+
+//리뷰 테이블 생성 거래번호가 프라이머리 키 레이팅은 0~10점까지
+CREATE TABLE review ( 
+prod_no NUMBER(30) NOT NULL REFERENCES product(prod_no),
+tran_no NUMBER(30) NOT NULL REFERENCES transaction(tran_no),
+user_id VARCHAR2(100) NOT NULL REFERENCES users(user_id),
+review VARCHAR2(4000) NOT NULL,
+rating NUMBER(2) NOT NULL CHECK ( rating >= 0) CHECK(rating < 11),
+img_file VARCHAR2(4000)
+
+);
+ALTER TABLE review ADD(reg_date DATE);
+
+ALTER TABLE review ADD(show NUMBER(1));
+
+
+SELECT avg(rating)
+FROM review
+WHERE prod_no=?
+
+SELECT pd.prod_name, avg(r.rating)
+FROM product pd, review r
+WHERE pd.prod_no = r.prod_no
+AND r.prod_no=10000
+GROUP BY r.prod_no;
+
+
+
+INSERT INTO
+review (prod_no, tran_no, user_id, review, rating, img_file, reg_date)
+values (#{prodNo},#{tranNo},#{userId},#{review},#{rating},#{img_file},SYSDATE)
+
+INSERT INTO
+review (prod_no, tran_no, user_id, review, rating, img_file, reg_date)
+values (10000,10000,'user01','리뷰내용입니다.',0,'abdc.jpg',SYSDATE)
+
+
+
+select  to_char(reg_DATE , 'YYYYMMDDHH24MISS') from review 
+select  to_char(reg_DATE , 'YYYY/MM/DD HH24:MI:SS') from review;

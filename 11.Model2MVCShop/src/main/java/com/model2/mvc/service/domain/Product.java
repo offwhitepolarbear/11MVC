@@ -15,6 +15,9 @@ public class Product {
 	private int stock;
 	private int salesVolume;
 	
+	private int isReviewed;
+	private int rating;
+	
 	public Product(){
 	}
 	
@@ -88,5 +91,22 @@ public class Product {
 
 	public void setSalesVolume(int salesVolume) {
 		this.salesVolume = salesVolume;
+	}
+
+	public int getIsReviewed() {
+		return isReviewed;
+	}
+
+	public void setIsReviewed(int isReviewed) {
+		this.isReviewed = isReviewed;
 	}	
+	
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+
 }

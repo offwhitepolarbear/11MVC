@@ -100,6 +100,9 @@
       <th scope="col" class="warning">제품명</th>
       <th scope="col" >가격</th>
       <th scope="col" class="info">갯수</th>
+      <c:if test="${user.role eq 'user' }">
+      <th scope="col" class="info">리뷰작성</th>
+      </c:if>
       
     </tr>
   </thead>
@@ -131,6 +134,9 @@
   <td class="warning col-xs-2 col-sm-2 col-md-2">${product.prodName}</td>
   <td class="col-xs-2 col-sm-2 col-md-2"><i class="glyphicon glyphicon-usd" aria-hidden="true"></i> ${product.price}</td>
   <td class="info col-xs-2 col-sm-2 col-md-2">${product.stock} 개</td>
+  <c:if test="${user.role eq 'user' }">
+  <td class="info col-xs-1 col-sm-1 col-md-1"><button type="button" class="btn btn-success" id='review'>리뷰쓰러가기</button></td>
+  </c:if>
 </tr>
 
     
@@ -203,7 +209,6 @@
 	  			<button type="button" class="btn btn-primary" id='modify'>수정하기</button>
 	  		</div>
 		</div>
-		
 		<br/>
 		
  	</div>

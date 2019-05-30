@@ -106,15 +106,6 @@
 	WHERE tran_no = #{tranNo}
 	</update>
 	
-	<update id="updateTranCode2" parameterType="purchase" >
-	UPDATE
-	transaction 
-	<set>
-	 tran_status_code = #{tranCode}
-	</set>
-	WHERE prod_no = #{purchaseProd.prodNo}
-	</update>
-	
 	<select  id="getPurchaseList"  parameterType="search"	resultMap="purchaseMap">
 	  	SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq

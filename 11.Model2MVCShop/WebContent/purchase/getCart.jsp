@@ -80,18 +80,16 @@
 	  
 	  }
   $(function(){
-	//전체체크 클릭시
+	
+	  //전체체크 클릭시
 	  $("#checkAll").on('click', function(){
-		  alert("전체체크 클릭됨");
 		  $("[type='checkbox']").prop( 'checked',true);
 	  });
-	  //체크해제 클릭시
-	$("#checkNone").on('click', function(){
-		  alert("체크해제 클릭됨");
+	  
+	//체크해제 클릭시  
+	$("#checkNone").on('click', function(){		  
 		  $("[type='checkbox']").prop( 'checked',false);
 	  });
-	  
-	  
 	  
 	  //장바구니 수량감소 버튼액션
 	  $(".minus").on('click', function(){

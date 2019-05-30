@@ -116,14 +116,12 @@ public class PurchaseController {
 						cartString.remove(cartProducts[b]);
 					}
 				}
-				
 			}
 						
 			for(int i=0; i<cartString.size();i++) {
-				reCarting += cartString.get(i);
+				reCarting += cartString.get(i)+"n";
 			}
 			
-			System.out.println(reCarting+"��ī�á١ڡޡߡ١ڡޡߡ١ڡޡߡ١ڡޡ�");
 			cart.setProductNames(reCarting);
 			cart.setUserId(user.getUserId());
 			purchaseService.updateCart(cart);
@@ -356,12 +354,6 @@ public class PurchaseController {
 		List<String> stocks = new ArrayList<String>();
 		List<Product> cartList = new ArrayList<Product>();
 
-		User user = (User) session.getAttribute("user");
-
-		Cart cart = new Cart();
-		cart.setUserId(user.getUserId());
-		//Cart reCart = purchaseService.getCart(cart);
-
 		String beforeCart = products;
 		
 		if(!beforeCart.equals("empty")) {
@@ -415,7 +407,5 @@ public class PurchaseController {
 		
 		return "forward:/purchase/cartPurchase.jsp";
 	}
-	
-	
 	
 }

@@ -186,7 +186,7 @@ $(function() {
 		<div class="row">
 	  		<div class="text-center ">
 	  			<span><button type="button" class="btn btn-primary" 
-	  			style="width: 35%;" id="goToBuy">카트로사러가기</button></span>
+	  			style="width: 35%;" id="goToBuy">리뷰 입력</button></span>
 	  			<span><button type="button" class="btn btn-success"
 	  			 style="width: 35%;" id="addToCart">
 	  			 <i class="glyphicon glyphicon-shopping-cart" aria-hidden="true"id='cartext'>
