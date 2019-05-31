@@ -34,20 +34,26 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <!-- jQuery UI toolTip 사용 JS-->
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  
-
-  
+    
  <script type="text/javascript">
  
  $(function() {
 		
 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-		//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-		 $( "#modify" ).on("click" , function() {
+		//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.			
+		
+		//수정하기버튼 클릭 이벤트
+		$( "#modify" ).on("click" , function() {
 			 //alert("눌렸어");
 			 $("form").attr("method" , "GET").attr("action" , "/purchase/updatePurchase").submit();
 		});
 		
+		//리뷰 처리
+		$(".review").on("click" , function() {
+			alert($("#tranNo").val());
+			alert($(this).val());
+		});
+				
  });
  
 </script>
@@ -101,7 +107,7 @@
       <th scope="col" >가격</th>
       <th scope="col" class="info">갯수</th>
       <c:if test="${user.role eq 'user' }">
-      <th scope="col" class="info">리뷰작성</th>
+      <th scope="col" class="success ">리뷰작성</th>
       </c:if>
       
     </tr>
@@ -135,7 +141,7 @@
   <td class="col-xs-2 col-sm-2 col-md-2"><i class="glyphicon glyphicon-usd" aria-hidden="true"></i> ${product.price}</td>
   <td class="info col-xs-2 col-sm-2 col-md-2">${product.stock} 개</td>
   <c:if test="${user.role eq 'user' }">
-  <td class="info col-xs-1 col-sm-1 col-md-1"><button type="button" class="btn btn-success" id='review'>리뷰쓰러가기</button></td>
+  <td class="success col-xs-1 col-sm-1 col-md-1"><button type="button" class="btn btn-success review" id='review' value='${product.prodNo}'>리뷰쓰러가기</button></td>
   </c:if>
 </tr>
 
@@ -151,7 +157,7 @@
 		<div class="row">
 
 	  		<div class="col-xs-4 col-md-2"><strong>거래번호</strong></div>
-			<div class="col-xs-8 col-md-4">${purchase.tranNo}</div>
+			<div class="col-xs-8 col-md-4" >${purchase.tranNo}</div>
 		</div>
 
 		<hr/>

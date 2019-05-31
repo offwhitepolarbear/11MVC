@@ -83,12 +83,12 @@
 	
 	  //전체체크 클릭시
 	  $("#checkAll").on('click', function(){
-		  $("[type='checkbox']").prop( 'checked',true);
+		  $("[type='checkbox']").prop('checked',true);
 	  });
 	  
 	//체크해제 클릭시  
 	$("#checkNone").on('click', function(){		  
-		  $("[type='checkbox']").prop( 'checked',false);
+		  $("[type='checkbox']").prop('checked',false);
 	  });
 	  
 	  //장바구니 수량감소 버튼액션
@@ -201,6 +201,24 @@
 				$("form").attr("method" , "POST").attr("action" , "/purchase/purchaseAll").submit();
 		}	
 	);
+	
+	$("#multiDelete").on('click', function(){
+		var products = "";
+		$("[type='checkbox']:checked").each(function() { 
+			var count = $("[type='checkbox']").index(this);
+			var prodNo = $(this).val();
+			products += prodNo;
+			products += "a";
+			products += $($(".stock")[count]).val();
+			products += "n";					
+			alert(products);	
+			$("#products").val(products);
+		}	
+	);
+
+
+			
+	});
 
 });
 </script>
@@ -324,7 +342,8 @@
  	 &nbsp; <button type="button" class="btn btn-success" id='checkAll'><i class='glyphicon glyphicon-ok-circle'></i>전체선택</button>
  	 <button type="button" class="btn btn-danger"  id='checkNone'><i class='glyphicon glyphicon-remove-circle'></i>전체해제</button>
  	<br/>
- 	<button type="button" class="btn btn-primary center-block btn-block" style="width: 50%" id='goToBuy'>선택한 거 살게</button>
+ 	  <div class="row text-center"><button type="button" class="btn btn-primary btn-lg" style="width: 30%" id='goToBuy'>선택한 거 살게</button>
+ 	  &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-warning btn-lg" style="width: 20%" id='multiDelete'>선택한 거 삭제</button></div>
 
 </body>
 </html>

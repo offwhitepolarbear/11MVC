@@ -46,6 +46,8 @@ public class PurchaseServiceImpl implements PurchaseService{
 	@Override
 	public int orderCancel(Purchase purchase) throws Exception {
 		// TODO Auto-generated method stub
+		
+		int cancelProd = 0;
 		purchaseDao.updateTranCode(purchase);
 	
 		List<String> prodNos = new ArrayList<String>();
@@ -63,9 +65,10 @@ public class PurchaseServiceImpl implements PurchaseService{
 				product.setProdNo(Integer.parseInt(prodNos.get(i)));
 				product.setStock(Integer.parseInt(stocks.get(i)));
 				purchaseDao.orderCancel(product);
+				cancelProd += 1;
 			}
 		
-		return 0;
+		return cancelProd;
 	}
 	
 	@Override
@@ -144,6 +147,13 @@ public class PurchaseServiceImpl implements PurchaseService{
 		purchaseDao.updateCart(cart);
 	}
 
-	
+	private Map removeCartString(String cartString) {
+		cartString += "";
+		Map map = new HashMap<>();
+		List prodList = new ArrayList<String>();
+		List stockList = new ArrayList<String>();
+		
+		return map;
+	}
 
 }
