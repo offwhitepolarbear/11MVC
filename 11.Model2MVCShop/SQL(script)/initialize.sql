@@ -1,4 +1,3 @@
-
 DROP TABLE transaction;
 DROP TABLE product;
 DROP TABLE users;
@@ -324,14 +323,17 @@ set products='10100a3n'
 WHERE tran_no=10064;
 
 //리뷰 테이블 생성 거래번호가 프라이머리 키 레이팅은 0~10점까지
-CREATE TABLE review ( 
-prod_no NUMBER(30) NOT NULL REFERENCES product(prod_no),
-tran_no NUMBER(30) NOT NULL REFERENCES transaction(tran_no),
-user_id VARCHAR2(100) NOT NULL REFERENCES users(user_id),
+CREATE TABLE review (
+review_no NUMBER(20) NOT NULL,
+prod_no NUMBER(20) NOT NULL REFERENCES product(prod_no),
+tran_no NUMBER(20) NOT NULL REFERENCES transaction(tran_no),
+user_id VARCHAR2(4000) NOT NULL REFERENCES users(user_id),
 review VARCHAR2(4000) NOT NULL,
 rating NUMBER(2) NOT NULL CHECK ( rating >= 0) CHECK(rating < 11),
-img_file VARCHAR2(4000)
-
+img_file VARCHAR2(4000),
+reg_date DATE ,
+show NUMBER(1) ,
+PRIMARY KEY(review_no)
 );
 ALTER TABLE review ADD(reg_date DATE);
 

@@ -4,6 +4,8 @@ import java.sql.Date;
 
 public class Review {
 	
+	private int reviewNo;
+	
 	private int tranNo;
 	private int prodNo;
 	private int rating;
@@ -12,13 +14,18 @@ public class Review {
 	private String imgFile;
 	private Date regDate;
 	
+	private int show;
+	
 	public Review() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public Review(int tranNo) {
-		// TODO Auto-generated constructor stub
-		this.tranNo=tranNo;
+		
+	public int getReviewNo() {
+		return reviewNo;
+	}
+
+	public void setReviewNo(int reviewNo) {
+		this.reviewNo = reviewNo;
 	}
 	
 	public int getTranNo() {
@@ -76,5 +83,15 @@ public class Review {
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
 	}
+
+	public int getShow() {
+		return show;
+	}
+
+	public void setShow(int show) {
+		this.show = show;
+	}
+
+	
 
 }
