@@ -57,7 +57,7 @@ public class PurchaseController {
 	
 	
 	//@RequestMapping("/addPurchaseView.do")
-	@RequestMapping( value="addPurchase/{prodNo}", method=RequestMethod.GET )
+	@RequestMapping( value="addPurchase", method=RequestMethod.GET )
 	public String addPurchaseView(@PathVariable String prodNo, Model model, HttpSession session) throws Exception {
 
 		User user = (User)session.getAttribute("user");
@@ -70,62 +70,10 @@ public class PurchaseController {
 	//@RequestMapping("/addPurchase.do")
 	@RequestMapping( value="addPurchase", method=RequestMethod.POST )
 	public String addPurchase( @ModelAttribute("purchase") Purchase purchase, HttpSession session) throws Exception {
-
-		System.out.println("/purchase/addPurchase : POST");
-		//Business Logic
-		User user= (User)session.getAttribute("user");
-		Cart cart = new Cart();
-		cart.setUserId(user.getUserId());
-		cart = purchaseService.getCart(cart);
-		String fromCart = cart.getProductNames();
-		String[] cartProducts = fromCart.split("n");
-		String reCarting = "";
-		List<String> cartString = new ArrayList<String>(Arrays.asList(cartProducts));
-		List<String> cartProdNos = new ArrayList<String>();
-		List<String> cartStocks = new ArrayList<String>();
-		
-		for (int i = 0; i < cartProducts.length; i++) {
-			String[] parseProd = cartProducts[i].split("a");
-			cartProdNos.add(parseProd[0]);
-			cartStocks.add(parseProd[1]);
-		}
-				
+		User user = (User)session.getAttribute("user");
 		purchase.setBuyer(user);
-		
-		purchase.setDivyDate(purchase.getDivyDate().substring(2).replace("-", "/"));
 		purchaseService.addPurchase(purchase);
-	
-		List<String> prodNos = new ArrayList<String>();
-		List<String> stocks = new ArrayList<String>();
-		
-		String[] parseProducts = purchase.getProducts().split("n");
-
-			for (int i = 0; i < parseProducts.length; i++) {
-				String[] parseProd = parseProducts[i].split("a");				
-				prodNos.add(parseProd[0]);
-				stocks.add(parseProd[1]);
-			}
-			
-			for (int i=0; i<prodNos.size();i++) {
-				Product product = new Product();
-				product.setProdNo(Integer.parseInt(prodNos.get(i)));
-				product.setStock(Integer.parseInt(stocks.get(i)));
-				purchaseService.stockPurchase(product);
-				for (int b = 0; b< cartString.size(); b++) {
-					if(cartProducts[b].indexOf(prodNos.get(i))!=-1) {
-						cartString.remove(cartProducts[b]);
-					}
-				}
-			}
-						
-			for(int i=0; i<cartString.size();i++) {
-				reCarting += cartString.get(i)+"n";
-			}
-			
-			cart.setProductNames(reCarting);
-			cart.setUserId(user.getUserId());
-			purchaseService.updateCart(cart);
-			
+				
 		return "redirect:/purchase/getPurchase?tranNo="+purchase.getTranNo();
 	}
 	

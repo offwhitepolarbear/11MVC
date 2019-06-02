@@ -97,6 +97,7 @@
 	}
 	
 	function cancelOrder(count){
+		
 		var cancelButton = "<button type='button' class='btn btn-danger btn-sm btn-block'><i class='glyphicon glyphicon-remove-sign' aria-hidden='true'></i>주문취소</button>";
 		var tranNoJson = $($(".tranNo")[count]).text().trim();		
 		var productsJson = $($(".products")[count]).text().trim();

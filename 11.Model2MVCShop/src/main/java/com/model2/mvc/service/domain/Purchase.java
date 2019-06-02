@@ -17,7 +17,11 @@ public class Purchase {
 	private int tranNo;
 	
 	private int stock;
+	
+
 	private String products;
+	
+	private String fullCart;
 	
 	
 	public Purchase(){
@@ -98,7 +102,25 @@ public class Purchase {
 				+ paymentOption + ", purchaseProd=" + purchaseProd
 				+ ", receiverName=" + receiverName + ", receiverPhone="
 				+ receiverPhone + ", tranCode=" + tranCode + ", tranNo="
-				+ tranNo +", stock = "+stock+ "]";
+				+ tranNo +", products = "+products;
+	}
+
+
+
+	public String getProducts() {
+		return products;
+	}
+
+	public void setProducts(String products) {
+		this.products = products;
+	}
+
+	public String getFullCart() {
+		return fullCart;
+	}
+
+	public void setFullCart(String fullCart) {
+		this.fullCart = fullCart;
 	}
 
 	public int getStock() {
@@ -107,13 +129,5 @@ public class Purchase {
 
 	public void setStock(int stock) {
 		this.stock = stock;
-	}
-
-	public String getProducts() {
-		return products;
-	}
-
-	public void setProducts(String products) {
-		this.products = products;
 	}
 }

@@ -33,6 +33,61 @@ public class PurchaseServiceImpl implements PurchaseService{
 
 	@Override
 	public int addPurchase(Purchase purchase) throws Exception {
+		
+		System.out.println("addPurchaseüĿ 01");
+		Cart cart = new Cart();
+		cart.setUserId(purchase.getBuyer().getUserId());
+		cart = purchaseDao.getCart(cart);
+		String ogCart = cart.getProductNames();
+		String removeProducts = purchase.getProducts();	
+		
+		purchase.setDivyDate(purchase.getDivyDate().substring(2).replace("-", "/"));
+		
+		System.out.println("addPurchaseüĿ 02");
+		
+		String[] splitCart = ogCart.split("n");
+		String[] splitProducts =removeProducts.split("n");
+		List<String> cartString = new ArrayList<String>(Arrays.asList(splitCart));
+		String reCarting = "";
+		
+		System.out.println("addPurchaseüĿ 03");
+		
+		if (cartString.size()==1) {
+			reCarting="empty";
+			String[] stocking = splitProducts[0].split("a");
+			Product product = new Product();
+			product.setProdNo(Integer.parseInt(stocking[0]));
+			product.setStock(Integer.parseInt(stocking[1]));
+			purchaseDao.stockPurchase(product);
+		}
+		
+		else {
+			
+			for(int a=0; a<cartString.size();a++) {
+				for (int b=0; b<splitProducts.length;b++) {
+					if(cartString.get(a).indexOf(splitProducts[b])!=-1) {
+					cartString.remove(a);
+					String[] stocking = splitProducts[b].split("a");
+					Product product = new Product();
+					product.setProdNo(Integer.parseInt(stocking[0]));
+					product.setStock(Integer.parseInt(stocking[1]));
+					purchaseDao.stockPurchase(product);
+					}
+				}
+			}
+			
+			System.out.println("addPurchaseüĿ 04");
+			for(int a=0; a<cartString.size();a++) {
+				reCarting += cartString.get(a)+"n" ;
+			}
+			
+		}
+		
+		cart.setProductNames(reCarting);
+		cart.setUserId(purchase.getBuyer().getUserId());
+		System.out.println("addPurchaseüĿ 05");
+		purchaseDao.updateCart(cart);
+		System.out.println("addPurchaseüĿ 06");
 		return purchaseDao.addPurchase(purchase);
 		// TODO Auto-generated method stub
 		
@@ -49,7 +104,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 		// TODO Auto-generated method stub
 		
 		int cancelProd = 0;
-		purchaseDao.updateTranCode(purchase);
+		
 	
 		List<String> prodNos = new ArrayList<String>();
 		List<String> stocks = new ArrayList<String>();
@@ -69,7 +124,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 				cancelProd += 1;
 			}
 		
-		return cancelProd;
+		return purchaseDao.updateTranCode(purchase);
 	}
 	
 	@Override

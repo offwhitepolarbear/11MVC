@@ -8,12 +8,6 @@
 
 <resultMap id="purchaseMap" type="purchase">
 	<result property="buyer.userId" 			column="buyer_id" />
-
-	<result property="purchaseProd.prodNo" 			column="prod_no" />	
-	<result property="purchaseProd.prodName" 	column="prod_name" />
-	<result property="purchaseProd.price" 				column="price" />
-	<result property="purchaseProd.fileName" 		column="image_file" />
-	<result property="purchaseProd.prodDetail" 	column="prod_detail" />
 			
 	<result property="divyAddr"				column="demailaddr" 			jdbcType="VARCHAR" />
 	<result property="divyDate" 			column="dlvy_date" 				jdbcType="DATE" />
@@ -25,7 +19,6 @@
 	<result property="tranCode" 			column="tran_status_code" 	jdbcType="CHAR"  />
 	<result property="tranNo" 				column="tran_no" 				jdbcType="NUMERIC"  />
 
-	<result property="stock" 					column="stock" 					jdbcType="NUMERIC"  />
 	<result property="products"				column="products"				jdbcType="VARCHAR" />
 </resultMap>
 
@@ -73,16 +66,7 @@
 	WHERE
 	tr.tran_no = #{value}
 	</select>
-	
-	<select id="getPurchase2" parameterType="int" resultMap="purchaseMap">
-	SELECT
-	tran_no, prod_no, buyer_id, payment_option, receiver_name,
-	receiver_phone, demailaddr,order_data, dlvy_date, dlvy_request, tran_status_code, stock
-	FROM transaction 
-	WHERE
-	prod_no = #{value}
-	</select>
-	
+		
 	<update id="updatePurchase" parameterType="purchase" >
 		UPDATE
 		transaction 

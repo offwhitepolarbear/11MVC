@@ -47,40 +47,38 @@
 		  var count = $(".removeCart").index(this);
 		  var originalCartJson = "";
 		  var userIdJson = $("#userId").val();
-		  //alert($($(".stock")[count]).val());
-		  //alert($($(".prodNo")[count]).val());
+		  
 		  var productsJson = $($(".prodNo")[count]).val()+"a"+$($(".stock")[count]).val()+"n";
 		  $(".productCount").each( function() {
 			 originalCartJson += $($(".prodNo")[$(".productCount").index(this)]).val()+"a";
 			 originalCartJson += $($(".stock")[$(".productCount").index(this)]).val()+"n"; 
 		  });
 		  
-		  alert(originalCartJson);
+	
 		  
 			var jsoned = { userId : userIdJson , productNames : productsJson , fullCart : originalCartJson };
-			alert(jsoned);
+		
 			var stringified = JSON.stringify(jsoned);
-			alert(stringified);
+		
 			  $.ajax(
 						{
 						type : "POST",
 						url : "/purchase/json/removeCart",
 						data : stringified,
 						contentType: "application/json", //보내는 컨텐츠의 타입
-						//dataType : "json",      //받아올 데이터의 타입 필요없음
+						
 						success : function(serverData, status) {
-											//alert(status);
-											alert("server에서 온 Data : \n" + serverData);
+											
+										
 											var JSONData = JSON.stringify(serverData);	
-											alert("JSONData = \n"+	JSONData);
-											//alert(serverData.stock);
-											//alert(serverData.prodName);
-											//alert(serverData.productNames);
-											 $($("productCount")[count]).remove();
+											
+											
+											 $($(".productCount")[count]).remove();
 											 
 											 if ($(".productCount").length==0){
 												  var emptyTag="<br/><div class='text-center'><h1><i class='glyphicon glyphicon-shopping-cart'></i>가 텅텅비었습니다.</h1></div>";
 												  $(".table-responsive").html(emptyTag);
+												  $("#allButtons").remove();
 											  }
 											
 										},
@@ -215,6 +213,13 @@
 	);
 	
 	$("#multiDelete").on('click', function(){
+		
+		$("[type='checkbox']:checked").each(function() { 
+			var count = $("[type='checkbox']").index(this);
+		alert(count);
+		//$($(".removeCart")[count]).trigger('click');
+		});
+		/*
 		alert($("#userId").val());
 		var products = "";
 		$("[type='checkbox']:checked").each(function() { 
@@ -228,6 +233,7 @@
 			$("#products").val(products);
 		}	
 	);
+		*/
 
 
 			
@@ -353,11 +359,14 @@
  	</div>
  	<!--  화면구성 div End /////////////////////////////////////-->
  	<br/>
+ 	<c:if test="${!empty cartList}">
+ 	<div id='allButtons'>
  	 &nbsp; <button type="button" class="btn btn-success" id='checkAll'><i class='glyphicon glyphicon-ok-circle'></i>전체선택</button>
  	 <button type="button" class="btn btn-danger"  id='checkNone'><i class='glyphicon glyphicon-remove-circle'></i>전체해제</button>
  	<br/>
  	  <div class="row text-center"><button type="button" class="btn btn-primary btn-lg" style="width: 30%" id='goToBuy'>선택한 거 살게</button>
  	  &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-warning btn-lg" style="width: 20%" id='multiDelete'>선택한 거 삭제</button></div>
-
+	</div>
+	</c:if>
 </body>
 </html>
