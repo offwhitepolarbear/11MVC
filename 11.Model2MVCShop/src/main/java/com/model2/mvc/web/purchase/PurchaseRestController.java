@@ -180,65 +180,11 @@ public class PurchaseRestController {
 	}
 
 	@RequestMapping(value = "json/removeCart", method = RequestMethod.POST)
-	public Cart removeCart(@RequestBody Product product, HttpSession session) throws Exception {
+	public Cart removeCart(@RequestBody Cart cart) throws Exception {
 
-		System.out.println("카트에 들어갈 제품 번호 : " + product.getProdNo());
-
-		String againProdPosition = "none";
-		String inputProdNo = String.valueOf(product.getProdNo());
-		String carting = "";
+		System.out.println("json/removeCart POST방식 들어옴");
 		
-		List<String> prodNos = new ArrayList<String>();
-		List<String> stocks = new ArrayList<String>();
-
-		User user = (User) session.getAttribute("user");
-
-		Cart cart = new Cart();
-		cart.setUserId(user.getUserId());
-		Cart reCart = purchaseService.getCart(cart);
-		System.out.println("갔다온 카트 아이디 출력 : " + cart.getUserId());
-		String beforeCart = reCart.getProductNames();
-		String[] parseCart = beforeCart.split("n");
-
-		// 카트에 들은게 하나뿐인데 삭제명령이 왔으면...
-		if (parseCart.length == 1) {
-			carting = "empty";
-		}
-		// 그외의 경우
-		else {
-
-			// 일단 기존에 카트에 있던 위치를 찾아냄
-
-			for (int i = 0; i < parseCart.length; i++) {
-				if (parseCart[i].indexOf(inputProdNo) != -1) {
-					againProdPosition = String.valueOf(i);
-				}
-			}
-			// 파싱하면서 예비 리스트에 담아주세요
-			for (int i = 0; i < parseCart.length; i++) {
-				String[] parseProd = parseCart[i].split("a");
-				
-				//기존에 있던 애의 위치가 걸리면 패스하도록 합시다
-				if (i == Integer.parseInt(againProdPosition)) {
-					continue;
-				}
-				
-				prodNos.add(parseProd[0]);
-				stocks.add(parseProd[1]);
-			}
-
-			// 남은애들을 다시 순서대로 나머지 카트에 넣습니다.
-			for (int i = 0; i < prodNos.size(); i++) {
-				carting += prodNos.get(i) + "a";
-				carting += stocks.get(i) + "n";
-			}
-
-		}
-
-		cart.setProductNames(carting);
-		System.out.println("카트내용☆★☆★☆★☆★☆★" + cart.getProductNames());
-		System.out.println("카트아이디☆★☆★☆★☆★:" + cart.getUserId());
-		purchaseService.updateCart(cart);
+		purchaseService.removeCart(cart);
 
 		return cart;
 	}

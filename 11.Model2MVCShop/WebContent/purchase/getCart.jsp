@@ -38,48 +38,60 @@
 
   
  <script type="text/javascript">
- //var counter=0;
- //var productCount=$(".productCount").length;
-  function removeCart(input){
-	  //counter += 1;
-	  //alert(counter);
-	  //alert(productCount);
-	  //alert(prodNo);
-	var prodNoJson=input
-	var jsoned = {prodNo : prodNoJson};
-	var stringified = JSON.stringify(jsoned);
-	
-	  $.ajax(
-				{
-				type : "POST",
-				url : "/purchase/json/removeCart",
-				data : stringified,
-				contentType: "application/json", //보내는 컨텐츠의 타입
-				//dataType : "json",      //받아올 데이터의 타입 필요없음
-				success : function(serverData, status) {
-									//alert(status);
-									//alert("server에서 온 Data : \n" + serverData);
-									var JSONData = JSON.stringify(serverData);	
-									//alert("JSONData = \n"+	JSONData);
-									//alert(serverData.stock);
-									//alert(serverData.prodName);
-									alert(serverData.productNames);
-									 $("#"+input+"").remove();
-									 
-									 if ($(".productCount").length==0){
-										  var emptyTag="<br/><div class='text-center'><h1><i class='glyphicon glyphicon-shopping-cart'></i>가 텅텅비었습니다.</h1></div>";
-										  $(".table-responsive").html(emptyTag);
-									  }
-									
-								},
-				error : function(request,status,error){
-							        alert("에러남 : "+error);
-							       }
-				}
-			);
-	  
-	  }
+ 
   $(function(){
+	  
+	  //휴지통 클릭시
+	  
+	  $(".removeCart").on('click', function(){
+		  var count = $(".removeCart").index(this);
+		  var originalCartJson = "";
+		  var userIdJson = $("#userId").val();
+		  //alert($($(".stock")[count]).val());
+		  //alert($($(".prodNo")[count]).val());
+		  var productsJson = $($(".prodNo")[count]).val()+"a"+$($(".stock")[count]).val()+"n";
+		  $(".productCount").each( function() {
+			 originalCartJson += $($(".prodNo")[$(".productCount").index(this)]).val()+"a";
+			 originalCartJson += $($(".stock")[$(".productCount").index(this)]).val()+"n"; 
+		  });
+		  
+		  alert(originalCartJson);
+		  
+			var jsoned = { userId : userIdJson , productNames : productsJson , fullCart : originalCartJson };
+			alert(jsoned);
+			var stringified = JSON.stringify(jsoned);
+			alert(stringified);
+			  $.ajax(
+						{
+						type : "POST",
+						url : "/purchase/json/removeCart",
+						data : stringified,
+						contentType: "application/json", //보내는 컨텐츠의 타입
+						//dataType : "json",      //받아올 데이터의 타입 필요없음
+						success : function(serverData, status) {
+											//alert(status);
+											alert("server에서 온 Data : \n" + serverData);
+											var JSONData = JSON.stringify(serverData);	
+											alert("JSONData = \n"+	JSONData);
+											//alert(serverData.stock);
+											//alert(serverData.prodName);
+											//alert(serverData.productNames);
+											 $($("productCount")[count]).remove();
+											 
+											 if ($(".productCount").length==0){
+												  var emptyTag="<br/><div class='text-center'><h1><i class='glyphicon glyphicon-shopping-cart'></i>가 텅텅비었습니다.</h1></div>";
+												  $(".table-responsive").html(emptyTag);
+											  }
+											
+										},
+						error : function(request,status,error){
+									        alert("에러남 : "+error+"상태:"+status+"에러그자체:"+error);
+									       }
+						}
+					);
+		 
+  		});
+	
 	
 	  //전체체크 클릭시
 	  $("#checkAll").on('click', function(){
@@ -203,6 +215,7 @@
 	);
 	
 	$("#multiDelete").on('click', function(){
+		alert($("#userId").val());
 		var products = "";
 		$("[type='checkbox']:checked").each(function() { 
 			var count = $("[type='checkbox']").index(this);
@@ -249,6 +262,7 @@
 		    <div class="col-md-6 text-right">
 			    <form class="form-inline" name="detailForm">
 			    <input type="hidden" name='products' id='products' value=''>
+			    <input type="hidden" name='userId' id='userId' value='${user.userId}'>
 				</form>
 	    	</div>
 	    	
@@ -299,7 +313,7 @@
 
 <tr class='productCount' id='${product.prodNo}'>
   <!-- <td class="success col-md-1">${i}</td> -->
-  <td class="success col-sm-1 col-md-1"><input type="checkbox" value="${product.prodNo}"></td>
+  <td class="success col-sm-1 col-md-1"><input type="checkbox" class='prodNo' value="${product.prodNo}"></td>
   <td class="active col-sm-3 col-md-3"><img class="img-rounded" src="../images/uploadFiles/16by9.png" 
 				 style="height: 100px;
 				 background:
@@ -323,7 +337,7 @@
       	</span>
     </div>
     </td>
-  <td class="danger col-md-1"><button type="button" class="btn btn-danger" style='width:100%;height:100px;' onclick="javascript:removeCart(${product.prodNo});"><i class='glyphicon glyphicon-trash'></i></button></td>
+  <td class="danger col-md-1"><button type="button" class="btn btn-danger removeCart" style='width:100%;height:100px;'><i class='glyphicon glyphicon-trash'></i></button></td>
 </tr>
 
     

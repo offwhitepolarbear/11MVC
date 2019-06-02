@@ -36,5 +36,7 @@ public interface PurchaseService {
 	public Cart getCart(Cart cart) throws Exception ; 
 	
 	public void updateCart (Cart cart) throws Exception ;
-
+	
+	public String removeCart (Cart cart) throws Exception ;
+	
 }

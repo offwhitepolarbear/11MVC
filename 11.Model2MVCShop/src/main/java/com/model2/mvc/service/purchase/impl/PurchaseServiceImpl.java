@@ -1,6 +1,7 @@
 package com.model2.mvc.service.purchase.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,6 +148,7 @@ public class PurchaseServiceImpl implements PurchaseService{
 		purchaseDao.updateCart(cart);
 	}
 
+	/*
 	private Map removeCartString(String cartString) {
 		cartString += "";
 		Map map = new HashMap<>();
@@ -154,6 +156,47 @@ public class PurchaseServiceImpl implements PurchaseService{
 		List stockList = new ArrayList<String>();
 		
 		return map;
+	}
+	*/
+
+	@Override
+	public String removeCart(Cart cart) throws Exception {
+		// TODO Auto-generated method stub
+		
+		String ogCart = cart.getFullCart();
+		String removeProducts = cart.getProductNames();
+		String[] splitCart = ogCart.split("n");
+		String[] splitProducts =removeProducts.split("n");
+		List<String> cartString = new ArrayList<String>(Arrays.asList(splitCart));
+		String reCarting = "";
+		
+		if (cartString.size()==1) {
+			reCarting="empty";
+		}
+		
+		else {
+			
+			for(int a=0; a<cartString.size();a++) {
+				for (int b=0; b<splitProducts.length;b++) {
+					if(cartString.get(a).indexOf(splitProducts[b])!=-1) {
+					cartString.remove(a);
+					}
+				}
+			}
+			
+			
+			for(int a=0; a<cartString.size();a++) {
+				reCarting += cartString.get(a)+"n" ;
+			}
+			
+		}
+		
+		cart.setProductNames(reCarting);
+		
+		purchaseDao.updateCart(cart);
+		
+		return cart.getProductNames();
+		
 	}
 
 }

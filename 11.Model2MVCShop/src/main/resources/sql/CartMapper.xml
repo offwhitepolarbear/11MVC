@@ -7,8 +7,8 @@
 <mapper namespace="CartMapper">
 		
 	<resultMap id="cartMap" type="cart">
-		<result property="userId" 		column="user_id" 			jdbcType="VARCHAR"/>
-		<result property="productNames"		column="cart" 	jdbcType="VARCHAR" />
+		<result property="userId" 		column="user_id" 	jdbcType="VARCHAR"/>
+		<result property="productNames"		column="cart" 		jdbcType="VARCHAR" />
 	</resultMap>
 	
 	<insert id="addCart" parameterType="String" >	

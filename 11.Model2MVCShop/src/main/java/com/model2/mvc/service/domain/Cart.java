@@ -4,7 +4,8 @@ public class Cart {
 	
 	private String userId;
 	private String productNames;
-	private Product[] products;	
+	private String fullCart;
+		
 	
 	public Cart() {
 		
@@ -27,12 +28,17 @@ public class Cart {
 		this.productNames = productNames;
 	}
 
-	public Product[] getProducts() {
-		return products;
+	public String getFullCart() {
+		return fullCart;
 	}
 
-	public void setProducts(Product[] products) {
-		this.products = products;
+	public void setFullCart(String fullCart) {
+		this.fullCart = fullCart;
 	}
 	
+	@Override
+	public String toString() {
+		return "userid : "+userId+" <productNames : "+productNames+" <originalCart :"+fullCart;
+	}
+
 }
