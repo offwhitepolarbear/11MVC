@@ -33,9 +33,7 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   
   <style>
-	  body {
-            padding-top : 50px;
-        }
+
     </style>
   
   <script type="text/javascript">
@@ -237,10 +235,10 @@
 				 <a href="javascript:fncGetProduct(${product.prodNo});" class="thumbnail">
 				 <img class="img-rounded" src="../images/uploadFiles/16by9.png" 
 				 style="width:100%;
-				 background:
-				 url('../images/uploadFiles/${product.fileName}'), 
-				 url('../images/uploadFiles/noimg.JPG');
-				  no-repeat center center; background-size:cover;">
+				 background-image: url('/images/uploadFiles/${product.fileName}'),url('/images/uploadFiles/noimg.JPG');
+				  background-repeat:no-repeat; 
+				  background-position:center center; 
+				  background-size:cover;">
 	      			<!--  
 	      			<img class="img-rounded" src="../images/uploadFiles/${product.fileName}" >
 	      			-->

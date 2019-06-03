@@ -48,6 +48,9 @@ public class ProductController {
 	@Value("#{commonProperties['filePath']}")
 	String filePath;
 	
+	@Value("#{commonProperties['serverPath']}")
+	String serverPath;
+	
 	@RequestMapping( value="addProduct", method=RequestMethod.GET )
 	public String addProductView() throws Exception {
 
@@ -64,13 +67,16 @@ public class ProductController {
 	
 		product.setManuDate(product.getManuDate().replace("/", ""));
 		List<MultipartFile> files = multipartHttpServletRequest.getFiles("uploadFile");
+		
 		System.out.println("들어온 파일 갯수 : "+files.size());
 		System.out.println(filePath+"저장경로입니다.");
-			product.setFileName(files.get(0).getOriginalFilename());		
+		
+		product.setFileName(files.get(0).getOriginalFilename());		
 		
 		for (int i = 0; i < files.size(); i++) {
-			 File file = new File(filePath, files.get(i).getOriginalFilename());
+			File file = new File(filePath, files.get(i).getOriginalFilename());
 			files.get(i).transferTo(file);
+			
 		}
 
 		productService.addProduct(product);
@@ -190,8 +196,9 @@ public class ProductController {
 		product.setManuDate(product.getManuDate().replace("-", ""));
 		
 		for (int i = 0; i < files.size(); i++) {
-			 File file = new File(filePath, files.get(i).getOriginalFilename());
+			File file = new File(filePath, files.get(i).getOriginalFilename());
 			files.get(i).transferTo(file);
+			
 		}
 		productService.updateProduct(product);
 

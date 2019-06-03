@@ -105,7 +105,6 @@ public class PurchaseServiceImpl implements PurchaseService{
 		
 		int cancelProd = 0;
 		
-	
 		List<String> prodNos = new ArrayList<String>();
 		List<String> stocks = new ArrayList<String>();
 		String[] parseProducts = purchase.getProducts().split("n");
