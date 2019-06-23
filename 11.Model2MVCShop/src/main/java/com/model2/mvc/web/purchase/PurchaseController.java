@@ -1,7 +1,6 @@
 package com.model2.mvc.web.purchase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

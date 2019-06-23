@@ -84,7 +84,7 @@
 	                         
 	                         <li><a href="#">최근본상품</a></li>
 	                         <li class="divider"></li>
-	                         <li><a href="#">etc..</a></li>
+	                         <li><a href="#">채팅방etc...</a></li>
 	                     </ul>
 	                 </li>
 	                 
@@ -148,8 +148,8 @@
 		 		alert("그런게 왜 궁금하시죠");
 		 	});
 		 	
-		 	$( "a:contains('etc...')" ).on("click" , function() {
-		 		
+		 	$( "a:contains('채팅방etc...')" ).on("click" , function() {
+		 		$(self.location).attr("href","/chat/enterChat");
 		 	});
 		 	
 		 	
