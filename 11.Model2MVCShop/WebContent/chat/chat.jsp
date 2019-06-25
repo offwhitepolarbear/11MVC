@@ -56,7 +56,7 @@
 </style>
 </head>
 <body>
- <div id='userId'>${user.userId}</div>
+ <div id='userId'>${user.userId}<br/></div>
     <div id="chat_box"><br/></div>
     <input type="text" id="msg">
     <button id="msg_process">전송</button>
