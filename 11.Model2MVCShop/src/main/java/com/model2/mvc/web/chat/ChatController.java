@@ -18,5 +18,13 @@ public class ChatController {
 				
 		return "redirect:/chat/chat.jsp";
 	}
+	
+	@RequestMapping( value="enterChat2")
+	public String enterChat2() throws Exception {
+		
+		System.out.println("아무튼 페이지로 보냈음");
+				
+		return "redirect:/chat/chat2.jsp";
+	}
 
 }

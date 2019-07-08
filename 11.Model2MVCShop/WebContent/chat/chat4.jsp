@@ -70,7 +70,7 @@
  
 </head>
 <body>
-
+ <div class="col-md-2">
 <div class="container-fluid">
  <div id='userId'>${user.userId}<br/></div>
  			<div class="panel panel-default" >
@@ -88,6 +88,44 @@
 	
      <div id='multibox'></div>
     </div>
-    
+  </div>  
+  <div class="col-md-2">
+<div class="container-fluid">
+ <div id='userId'>${user.userId}<br/></div>
+ 			<div class="panel panel-default" >
+				<div class="panel-body">
+					<p class="text-left" id="chat_box"></p>
+				</div>
+			</div>
+
+    <div class="input-group">
+  	<input type="text" class="form-control" placeholder="채팅을 입력해주세요" aria-describedby="basic-addon2" id="msg">
+  		<span class="input-group-btn">
+        <button class="btn btn-success" type="button" id="msg_process">전송!</button>
+      </span>
+	</div>
+	
+     <div id='multibox'></div>
+    </div>
+  </div>  
+  <div class="col-md-2">
+<div class="container-fluid">
+ <div id='userId'>${user.userId}<br/></div>
+ 			<div class="panel panel-default" >
+				<div class="panel-body">
+					<p class="text-left" id="chat_box"></p>
+				</div>
+			</div>
+
+    <div class="input-group">
+  	<input type="text" class="form-control" placeholder="채팅을 입력해주세요" aria-describedby="basic-addon2" id="msg">
+  		<span class="input-group-btn">
+        <button class="btn btn-success" type="button" id="msg_process">전송!</button>
+      </span>
+	</div>
+	
+     <div id='multibox'></div>
+    </div>
+  </div>  
 </body>
 </html>

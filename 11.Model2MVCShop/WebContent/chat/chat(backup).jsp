@@ -17,14 +17,26 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 	
 	<style>
-
+#chat_box {
+    width: 800px;
+    min-width: 800px;
+    height: 500px;
+    min-height: 500px;
+    border: 1px solid black;
+}
+#msg {
+    width: 700px;
+}
+#msg_process {
+    width: 90px;
+}
 </style>
 	
     <script>
         $(document).ready(function() {
             var socket = io("http://localhost:82");
-            socket.emit("joiner", "10001,10003,10005,25478,12587,92354");
             socket.emit("send_msg", $("#userId").text()+" 님이 접속하셨습니다 ");
+ 
             //msg에서 키를 누를떄
             $("#msg").keydown(function(key) {
                 //해당하는 키가 엔터키(13) 일떄
@@ -68,26 +80,14 @@
 <meta charset="UTF-8">
 <title>소켓 서버</title>
  
+
 </head>
 <body>
-
-<div class="container-fluid">
  <div id='userId'>${user.userId}<br/></div>
- 			<div class="panel panel-default" >
-				<div class="panel-body">
-					<p class="text-left" id="chat_box"></p>
-				</div>
-			</div>
-
-    <div class="input-group">
-  	<input type="text" class="form-control" placeholder="채팅을 입력해주세요" aria-describedby="basic-addon2" id="msg">
-  		<span class="input-group-btn">
-        <button class="btn btn-success" type="button" id="msg_process">전송!</button>
-      </span>
-	</div>
-	
-     <div id='multibox'></div>
-    </div>
-    
+    <div id="chat_box"><br/></div>
+    <input type="text" id="msg">
+    <button id="msg_process">전송</button>
+ 
+    <div id='multibox'></div>
 </body>
 </html>

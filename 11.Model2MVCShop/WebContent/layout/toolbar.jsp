@@ -82,7 +82,7 @@
 	                           <li><a href="#">장바구니</a></li>
 	                         </c:if>
 	                         
-	                         <li><a href="#">최근본상품</a></li>
+	                         <li><a href="#">채팅방222</a></li>
 	                         <li class="divider"></li>
 	                         <li><a href="#">채팅방etc...</a></li>
 	                     </ul>
@@ -144,8 +144,8 @@
 		 		$(self.location).attr("href","/purchase/getCart"); 	 		
 		 	});
 		 	
-		 	$( "a:contains('최근')" ).on("click" , function() {
-		 		alert("그런게 왜 궁금하시죠");
+		 	$( "a:contains('채팅방222')" ).on("click" , function() {
+		 		$(self.location).attr("href","/chat/enterChat2");
 		 	});
 		 	
 		 	$( "a:contains('채팅방etc...')" ).on("click" , function() {
